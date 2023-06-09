@@ -14,6 +14,7 @@ class Property extends Model
         'address',
         'category_id',
         'user_id',
+        'user_ip',
         'lat',
         'lng',
     ];

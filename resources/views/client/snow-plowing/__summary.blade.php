@@ -147,7 +147,7 @@
                     Grand Total<span class="">${{ number_format((float)$order->grand_total, 2, '.', ''); }}</span>
                 </li>
             </div>
-
+            @if((auth()->id()))
             <div class="text-end">
                 @php
                     $wallet = App\Models\Wallet::whereUserId(auth()->id())->first();
@@ -188,7 +188,7 @@
                     @endif
                 <button type="button" class="btn btn-success px-5" id="pay">Pay</button>
             </div>
-
+            @endif
         </div>
     </div>
 </div>

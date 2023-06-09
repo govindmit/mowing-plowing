@@ -47,9 +47,11 @@ class LawnMowingController extends ClientBaseController
 
         $data = $req->except('_token');
         $data['category_id'] = 1;
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+        $data['user_ip'] = $req->ip();
 
-        $property = Property::whereCategoryId($data['category_id'])->whereUserId(auth()->id())->whereLat($data['lat'])->whereLng($data['lng'])->first();
+       // $property = Property::whereCategoryId($data['category_id'])->whereUserId(auth()->id())->whereLat($data['lat'])->whereLng($data['lng'])->first();
+        $property = Property::whereCategoryId($data['category_id'])->whereUserIp($req->ip())->whereLat($data['lat'])->whereLng($data['lng'])->first();
 
         if(!$property) {
             $property = Property::create($data);
@@ -161,7 +163,8 @@ class LawnMowingController extends ClientBaseController
 
             $order = new Order;
             $order->order_id           = $order_id;
-            $order->user_id            = Auth::id();
+            $order->user_id            = Auth::id()?Auth::id():null;
+            $order->user_ip            = $property->user_ip;
             $order->category_id        = 1;
             $order->property_id        = $property->id;
             $order->lat                = $property->lat;
@@ -224,7 +227,8 @@ class LawnMowingController extends ClientBaseController
 
                 $recurring_order = new RecurringHistory();
                 $recurring_order->order_id           = $order_id;
-                $recurring_order->user_id            = Auth::id();
+                $recurring_order->user_id            = Auth::id()?Auth::id():null;
+                $recurring_order->user_ip            = $property->user_ip;
                 $recurring_order->provider_id        = 0;
                 $recurring_order->category_id        = 1;
                 $recurring_order->property_id        = $property->id;
