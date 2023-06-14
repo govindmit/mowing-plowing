@@ -41,7 +41,7 @@
     </form>
 </div>
 
-<div id="signUp">
+<!-- <div id="signUp">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" id="sign-up">
         @csrf
         <h4>Create your account </h4>
@@ -81,7 +81,7 @@
         </div>
         <p>Already have an account?<a class="ms-2"  id="signin" href="">Log in</a></p>
     </form>
-</div>
+</div> -->
 
 <div id="registration-form">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" enctype="multipart/form-data" id="registration">
@@ -117,10 +117,22 @@
             </div>
         </div>
         <div class="form-group">
+            <label>Email Address<span class="text-danger">*</span></label>
+            <div class="input-group"><span class="input-group-text"><i class="fa-solid fa-envelope fs-5"></i></span>
+                <input class="form-control" type="email" name="email" required="" placeholder="abc@gmail.com">
+            </div>
+        </div>
+        <div class="form-group">
+        <label>Phone Number<span class="text-danger">*</span></label>
+            <div class="input-group"><span class="input-group-text">+1</span>
+                <input class="form-control" type="text" name="phone_number" maxlength="10" required="" placeholder="Phone Number" value="{{old('phone_number')}}">
+            </div>
+        </div>
+        <div class="form-group">
             <label>Address<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                </span>
+                <i class="fa-regular fa-pen-to-square"></i>
+            </span>
                 <input id="location" class="form-control" type="text" name="address" required="" placeholder="Enter address">
                 <input type="hidden" name="lat" id="lat">
                 <input type="hidden" name="lng" id="lng">
@@ -141,34 +153,59 @@
             </div>
         </div>
         <div class="form-group mt-4">
-            <input name="email" type="hidden" value="{{$email ?? old('email')}}">
+            <!-- <input name="email" type="hidden" value="{{$email ?? old('email')}}"> -->
             <button class="btn btn-primary btn-block w-100 fw-light" id="sign-up" type="submit">Create Account</button>
         </div>
     </form>
 </div>
 
 <script>
+
+function loadGoogleMapsScript() {
+    var script = document.createElement("script");
+    script.src = "https://maps.google.com/maps/api/js?key={{ config('google.GOOGLE_MAPS_APIKEY') }}&libraries=places";
+    script.type = "text/javascript";
+    script.async = true;
+    script.defer = true;
+    script.addEventListener('load', initializeGoogleMaps);
+
+    document.head.appendChild(script);
+}
+
+function initializeGoogleMaps() {
+    var input = document.getElementById('location');
+    var options = { componentRestrictions: { country: ["us"] } };
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        document.getElementById('lat').value = place.geometry.location.lat();
+        document.getElementById('lng').value = place.geometry.location.lng();
+    });
+}
+
     $(document).ready(function() {
-        $('#signUp').hide();
+        // $('#signUp').hide();
         $('#registration-form').hide();
         $('#signup').click(function(event) {
             event.preventDefault();
             $('#login').hide();
-            // $('#registration-form').hide();
-            $('#signUp').show();
+            $('#registration-form').show();
+            loadGoogleMapsScript();
+            // $('#signUp').show();
         });
-        $('#signin').click(function(event) {
-            event.preventDefault();
-            $('#login').show();
-            $('#signUp').hide();
-            // $('#registration-form').hide();
-        });
+        // $('#signin').click(function(event) {
+        //     event.preventDefault();
+        //     $('#login').show();
+        //     // $('#signUp').hide();
+        //     $('#registration-form').hide();
+        // });
 
         // $('#next').click(function(event) {
         //     event.preventDefault();
-        //     $('#login').hide();
-        //     $('#signUp').hide();
-        //     $('#registration-form').show();
+        //     $('#login').show();
+        //     // $('#signUp').hide();
+        //     $('#registration-form').hide();
         // });
 
         // Rest of your JavaScript code
@@ -190,7 +227,6 @@
                         successMessage(res.message);
                         $('#get-summary').trigger('click');
                     } else if (res && res.success === false) {
-                        console.log(res);
                         errorMessage(res.message);
                     }
                 },
@@ -200,37 +236,6 @@
                 }
             });
         });
-
-
-        $('#sign-up').submit(function(event) {
-            event.preventDefault();
-            var data = $(this).serialize() + '&additionalVar1=' + encodeURIComponent('1');
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-                url: "{{ route('signup') }}",
-                type: 'post',
-                data: data,
-                dataType: 'json',
-                success: function(res) {
-                    console.log(res);
-                    if (res && res.success === true) {
-                    // successMessage(res.message);
-                    $('#registration-form').show();
-                    $('#signUp').hide();
-                    } else if (res && res.success === false) {
-                        errorMessage(res.message);
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                    errorMessage(err.error);
-                }
-            });
-        });
-
 
         $('#registration').submit(function(event) {
             event.preventDefault();
@@ -246,12 +251,12 @@
                 dataType: 'json',
                 success: function(res) {
                     console.log(res);
-                    // if (res && res.success === true) {
-                    // // successMessage(res.message);
+                    if (res && res.success === true) {
+                    // successMessage(res.message);
 
-                    // } else if (res && res.success === false) {
-                    //     errorMessage(res.message);
-                    // }
+                    } else if (res && res.success === false) {
+                        errorMessage(res.message);
+                    }
                 },
                 error: function(err) {
                     console.log(err);

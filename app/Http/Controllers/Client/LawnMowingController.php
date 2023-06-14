@@ -259,6 +259,10 @@ class LawnMowingController extends ClientBaseController
                 $recurring_order->gate_code          = $order->gate_code;
                 $recurring_order->instructions       = $order->instructions;
                 $recurring_order->save();
+                
+                if(!$orderExits){
+                    $order->save();
+                }
             }
 
             $this->order = Order::find($order->id);

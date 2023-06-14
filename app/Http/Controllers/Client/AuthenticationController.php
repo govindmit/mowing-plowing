@@ -33,7 +33,6 @@ class AuthenticationController extends ClientBaseController
 
     public function signup(Request $req)
     {
-        $additionalVar = $req->input('additionalVar1'); 
         try {
 
             $validator = Validator::make($req->all(), [
@@ -41,18 +40,7 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => 'required|max:10'
             ]);
 
-
-            if (!empty($additionalVar)) {
-                $additionalValidator = Validator::make($req->all(), [
-                    'additionalVar1' => 'required', // Add validation for additionalVar1
-                ]);
-        
-                if ($additionalValidator->fails()) {
-                    return back()->withErrors($additionalValidator)->withInput();
-                }
-            }
-
-            if($validator->fails()) {return back()->withErrors($validator)->withInput();}
+            if ($validator->fails()) {return back()->withErrors($validator)->withInput();}
 
             $req['phone_number'] = "+1".$req->phone_number;
 
@@ -77,16 +65,13 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => $req->phone_number,
                 'type' => 'customer',
             ]);
-            $otp = rand(111111,999999);
+             $otp = rand(111111,999999);
             $user->otp = $otp;
             $user->save();
 
-            if(!empty($additionalVar)){
-                return json_encode(array('email'=>$user->email ,'success'=>true));
-            }else{
-                Mail::to($req->email)->send(new EmailVerification('Sir/Madam',$otp));   
-                return redirect(route('verify-email'))->with('email',$req->email);
-            }
+            Mail::to($req->email)->send(new EmailVerification('Sir/Madam',$otp));
+
+            return redirect(route('verify-email'))->with('email',$req->email);
 
         } catch (\Throwable $th) {
             return redirect()->back()->with('error',"Something unexpected happened on server. ".$th->getMessage());
@@ -117,7 +102,7 @@ class AuthenticationController extends ClientBaseController
 
                 $this->sendSms($user->phone_number,'This is your 6 digit code '.$otp);
 
-                return redirect(route('verify-phone-number'))->with(['success'=>'Email has been verified. Now kindly verify phone number','phone_number'=>$user->phone_number,'email'=>$req->email]);
+                return redirect(route('registration'))->with(['success'=>'Phone number has been verified. Now kindly create your account','email'=>$user->email]);
             }
 
         } catch (\Throwable $th) {
@@ -156,6 +141,7 @@ class AuthenticationController extends ClientBaseController
 
     public function registration(Request $req)
     {
+        $additionalVar = $req->input('additionalVar1');
         try {
             $validator = Validator::make($req->all(), [
                 'email' => 'required',
@@ -167,11 +153,22 @@ class AuthenticationController extends ClientBaseController
                 'lat' => 'required',
                 'lng' => 'required',
             ]);
-            if ($validator->fails()) {return back()->withInput()->with(['email' => $req->email,'errors' => $validator->errors()]);}
 
-            $user = User::where('email',$req->email)->first();
+            if ($validator->fails()) {
+                if(!empty($additionalVar)){
+                    return json_encode(array(
+                        'success' => false,
+                        'message' => $validator->errors(),
+                    ));
+                }
+                else{
+                    return back()->withInput()->with(['email' => $req->email,'errors' => $validator->errors()]);}
+                }
 
+           
+            $user = User::where('email',$req->email)->first();   
             if(!$user) {return back()->with('error','Account does not exist with this email');}
+
 
             $user->first_name = $req->first_name;
             $user->last_name = $req->last_name;
@@ -195,8 +192,6 @@ class AuthenticationController extends ClientBaseController
             ])->id;
 
             $user->save();
-            print_r($user->id);
-            die();
 
             Wallet::create(['user_id'=>$user->id]);
 
