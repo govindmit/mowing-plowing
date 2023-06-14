@@ -124,7 +124,7 @@
                         <p class="mt-3 text-start">Kindly choose between Lawn mowing and Snow plowing.</p>
 
                         <div class="d-flex flex-column justify-content-between mt-5 w-100">
-                            <form action="{{ route('lawn-mowing.start') }}" method="post" id="lawn-mowing-form">
+                            <form action="{{ route('lawn-mowing.start-order') }}" method="post" id="lawn-mowing-form">
                                 @csrf
                                 <input type="hidden" name="address" value="{{ $address }}">
                                 <input type="hidden" name="lat" value="{{ $lat }}">

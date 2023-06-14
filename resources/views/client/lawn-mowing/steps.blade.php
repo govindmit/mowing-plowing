@@ -786,7 +786,7 @@
 
             <fieldset>
                 <div class="row">
-                    <div class="col-lg-10 col-md-12 col-sm-12 col-12" id="summary">
+                    <div class="col-lg-11 col-md-12 col-sm-12 col-12" id="summary">
 
                     </div>
                 </div>
@@ -1178,7 +1178,7 @@
             })
         })
 
-    });
+    });   
 
 </script>
 @endpush

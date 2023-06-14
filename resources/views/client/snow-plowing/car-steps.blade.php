@@ -547,7 +547,7 @@
 
             <fieldset>
                 <div class="row">
-                    <div class="col-lg-9 col-md-12 col-sm-12 col-12" id="summary">
+                    <div class="col-lg-11 col-md-12 col-sm-12 col-12" id="summary">
                         <div class="card rounded boxShadow py-4 px-3">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">

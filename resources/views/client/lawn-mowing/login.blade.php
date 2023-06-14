@@ -41,6 +41,7 @@
     </form>
 </div>
 
+
 <div id="registration-form">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" enctype="multipart/form-data" id="registration">
         @csrf
@@ -81,7 +82,7 @@
             </div>
         </div>
         <div class="form-group">
-        <label>Phone Number<span class="text-danger">*</span></label>
+            <label>Phone Number<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text">+1</span>
                 <input class="form-control" type="text" name="phone_number" maxlength="10" required="" placeholder="Phone Number" value="{{old('phone_number')}}">
             </div>
@@ -89,8 +90,8 @@
         <div class="form-group">
             <label>Address<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text">
-                <i class="fa-regular fa-pen-to-square"></i>
-            </span>
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </span>
                 <input id="reglocation" class="form-control" type="text" name="address" required="" placeholder="Enter address">
                 <input type="hidden" name="lat" id="reglat">
                 <input type="hidden" name="lng" id="reglng">
@@ -154,13 +155,6 @@
             $('#registration-form').show();
             loadGoogleMapsScript();
         });
-        $('#signin').click(function(event) {
-            event.preventDefault();
-            $('#login').show();
-            $('#signUp').hide();
-        });
-
-        // Rest of your JavaScript code
 
         $('#login-form').submit(function(event) {
             event.preventDefault();
@@ -190,7 +184,7 @@
         });
 
         function extractPropertyIdFromUrl(url) {
-            var regex = /\/snow-plowing\/\w+\/(\d+)/;
+            var regex = /\/lawn-mowing\/(\d+)/;
             var matches = url.match(regex);
             if (matches && matches.length > 1) {
                 return matches[1];
@@ -204,7 +198,6 @@
             var propertyId = extractPropertyIdFromUrl(currentUrl);
             console.log(propertyId);
             var data = $(this).serialize() + '&summaryRegister=' + encodeURIComponent('1') + '&propertyId=' + encodeURIComponent(propertyId);
-
 
             $.ajax({
                 headers: {

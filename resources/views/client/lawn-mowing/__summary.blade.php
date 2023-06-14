@@ -157,19 +157,7 @@
                 <li class="list-group-item bglightBlue mt-4 d-flex justify-content-between align-items-center boxShadow py-2 px-4 rounded-0">
                     Grand Total<span class="">${{ number_format((float)$order->grand_total, 2, '.', ''); }}</span>
                 </li>
-                @if(auth()->id())
-                <div class="mt-4 mb-5 pb-3">
-                    <p>*Recurring pricing starts on your second mow. The first mow is considered a maintenance mow to get your lawn in shape for recurring service.</p>
-                    <p>Please Note: Upon placing your order a hold will be placed on your account for the total job amount.</p>
-                    <p>We will contact you if price adjustments are needed based on a misrepresentation of your property information. Don’t worry, no changes will be applied without your approval first!</p>
-                </div>
-
-                <div class="m-2 mt-5">
-                    <label for="exampleFormControlTextarea1" class="form-label">Note:</label>
-                    <p>We will first deduct amount from M&P balance (if there is any) before we use your default card for order payment</p>
-                </div>
-                @endif
-                
+            </div>
             @if(auth()->id())
             <div class="text-end">
                 @php
