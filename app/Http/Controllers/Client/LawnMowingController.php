@@ -213,7 +213,15 @@ class LawnMowingController extends ClientBaseController
             $order->admin_commission = $adminCommission/100 * $remainingTotal;
             $order->grand_total  = $order->total_amount + $order->tax;
             $order->provider_amount = $remainingTotal - $order->admin_commission;
-            $order->save();
+
+            $orderExits = Order::whereCategoryId(1)->whereUserIp($property->user_ip)->wherePropertyId($property->id)->whereLat($property->lat)->whereLng($property->lng)->first();
+            if(!$orderExits){
+                $order->save();
+            }else{
+                $order=$orderExits;
+            }
+
+            
 
             $this->uploadOrderImages($request,$order_id,$order);
 
