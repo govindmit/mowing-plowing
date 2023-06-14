@@ -148,52 +148,46 @@
                 </li>
             </div>
             @if((auth()->id()))
-            <div class="text-end">
-                @php
+                <div class="text-end">
+                    @php
                     $wallet = App\Models\Wallet::whereUserId(auth()->id())->first();
                     $defaultCard = App\Models\Card::whereUserId(auth()->id())->whereIsDefault("1")->first();
-                @endphp
-                <div class="list-group-item my-4 d-flex justify-content-between align-items-center boxShadow py-3 px-4 rounded border-0">
-                    M&P wallet balance:
-                    <span class="">
-                        <span>${{ $wallet->amount }}</span>
-                    </span>
-                </div>
-                @if ($defaultCard)
+                    @endphp
+                    <div class="list-group-item my-4 d-flex justify-content-between align-items-center boxShadow py-3 px-4 rounded border-0">
+                        M&P wallet balance:
+                        <span class="">
+                            <span>${{ $wallet->amount }}</span>
+                        </span>
+                    </div>
+                    @if ($defaultCard)
                     <div class="list-group-item my-4 d-flex justify-content-between align-items-center boxShadow py-3 px-4 rounded border-0">
                         Default Card number:
                         <span class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36.084" height="11.553"
-                                viewBox="0 0 36.084 11.553">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36.084" height="11.553" viewBox="0 0 36.084 11.553">
                                 <g id="Layer_2" transform="translate(-6.7 -23.8)">
-                                    <path id="Path_13621" data-name="Path 13621"
-                                        d="M26.354,24.1,24.5,35.367h2.924L29.278,24.1Z"
-                                        transform="translate(-5.106 -0.086)" fill="#0275d8" />
-                                    <path id="Path_13622" data-name="Path 13622"
-                                        d="M48.448,24.1h0a1.4,1.4,0,0,0-1.5.927L42.6,35.439h3.066s.5-1.426.642-1.711h3.708c.071.428.357,1.711.357,1.711h2.71L50.73,24.1Zm-1.355,7.274c.214-.642,1.141-3.138,1.141-3.138l.357-1.07h0l.214,1s.57,2.71.713,3.28H47.093Z"
-                                        transform="translate(-10.299 -0.086)" fill="#0275d8" />
-                                    <path id="Path_13623" data-name="Path 13623"
-                                        d="M37.019,28.578c-1-.5-1.64-.856-1.64-1.426,0-.5.5-1,1.64-1a6.072,6.072,0,0,1,2.211.428l.285.143.428-2.425a7.5,7.5,0,0,0-2.639-.5h0c-2.852,0-4.921,1.569-4.921,3.708,0,1.64,1.426,2.567,2.567,3.066,1.141.57,1.5.927,1.5,1.426,0,.784-.927,1.07-1.783,1.07a6.083,6.083,0,0,1-2.781-.57l-.357-.214-.428,2.5a9.364,9.364,0,0,0,3.28.57c3.066,0,5.063-1.5,5.063-3.851C39.515,30.361,38.73,29.362,37.019,28.578Z"
-                                        transform="translate(-7 0)" fill="#0275d8" />
-                                    <path id="Path_13624" data-name="Path 13624"
-                                        d="M16.969,24.1h0l-2.852,7.7-.285-1.569h0l-1-5.206c-.143-.713-.713-.927-1.355-.927H6.843c-.071,0-.071.071-.143.071,0,.071,0,.143.071.143a12.074,12.074,0,0,1,1.925.713,2.433,2.433,0,0,1,1.284,1.5l2.353,8.843H15.4L19.964,24.1h-3Z"
-                                        transform="translate(0 -0.086)" fill="#0275d8" />
+                                    <path id="Path_13621" data-name="Path 13621" d="M26.354,24.1,24.5,35.367h2.924L29.278,24.1Z" transform="translate(-5.106 -0.086)" fill="#0275d8" />
+                                    <path id="Path_13622" data-name="Path 13622" d="M48.448,24.1h0a1.4,1.4,0,0,0-1.5.927L42.6,35.439h3.066s.5-1.426.642-1.711h3.708c.071.428.357,1.711.357,1.711h2.71L50.73,24.1Zm-1.355,7.274c.214-.642,1.141-3.138,1.141-3.138l.357-1.07h0l.214,1s.57,2.71.713,3.28H47.093Z" transform="translate(-10.299 -0.086)" fill="#0275d8" />
+                                    <path id="Path_13623" data-name="Path 13623" d="M37.019,28.578c-1-.5-1.64-.856-1.64-1.426,0-.5.5-1,1.64-1a6.072,6.072,0,0,1,2.211.428l.285.143.428-2.425a7.5,7.5,0,0,0-2.639-.5h0c-2.852,0-4.921,1.569-4.921,3.708,0,1.64,1.426,2.567,2.567,3.066,1.141.57,1.5.927,1.5,1.426,0,.784-.927,1.07-1.783,1.07a6.083,6.083,0,0,1-2.781-.57l-.357-.214-.428,2.5a9.364,9.364,0,0,0,3.28.57c3.066,0,5.063-1.5,5.063-3.851C39.515,30.361,38.73,29.362,37.019,28.578Z" transform="translate(-7 0)" fill="#0275d8" />
+                                    <path id="Path_13624" data-name="Path 13624" d="M16.969,24.1h0l-2.852,7.7-.285-1.569h0l-1-5.206c-.143-.713-.713-.927-1.355-.927H6.843c-.071,0-.071.071-.143.071,0,.071,0,.143.071.143a12.074,12.074,0,0,1,1.925.713,2.433,2.433,0,0,1,1.284,1.5l2.353,8.843H15.4L19.964,24.1h-3Z" transform="translate(0 -0.086)" fill="#0275d8" />
                                 </g>
                             </svg>
                             <span>**** **** **** {{ $defaultCard->last4 }}</span>
                         </span>
                     </div>
                     @else
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-opener" data-title="Add Card" data-url="{{ route('payments.add-card-form',['order_id'=>$order->id,'type'=>$type ?? '','service' => 'snow-plowing']) }}">Add Card</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-opener" data-title="Add Card" data-url="{{ route('payments.add-card-form',['order_id'=>$order->id,'type'=>$type ?? '','service' => 'snow-plowing']) }}">Add Card</button>
                     @endif
-                <button type="button" class="btn btn-success px-5" id="pay">Pay</button>
-            </div>
+                    <button type="button" class="btn btn-success px-5" id="pay">Pay</button>
+                </div>
+            @else
+                @include('client.snow-plowing.login')
             @endif
         </div>
     </div>
 </div>
 
 <script>
+
     $('#tip').on('change',function(){
         $.ajax({
             headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
@@ -274,4 +268,3 @@
         })
     })
 </script>
-

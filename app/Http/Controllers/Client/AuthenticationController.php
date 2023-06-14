@@ -33,6 +33,7 @@ class AuthenticationController extends ClientBaseController
 
     public function signup(Request $req)
     {
+        $additionalVar = $req->input('additionalVar1'); 
         try {
 
             $validator = Validator::make($req->all(), [
@@ -40,7 +41,18 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => 'required|max:10'
             ]);
 
-            if ($validator->fails()) {return back()->withErrors($validator)->withInput();}
+
+            if (!empty($additionalVar)) {
+                $additionalValidator = Validator::make($req->all(), [
+                    'additionalVar1' => 'required', // Add validation for additionalVar1
+                ]);
+        
+                if ($additionalValidator->fails()) {
+                    return back()->withErrors($additionalValidator)->withInput();
+                }
+            }
+
+            if($validator->fails()) {return back()->withErrors($validator)->withInput();}
 
             $req['phone_number'] = "+1".$req->phone_number;
 
@@ -65,13 +77,16 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => $req->phone_number,
                 'type' => 'customer',
             ]);
-             $otp = rand(111111,999999);
+            $otp = rand(111111,999999);
             $user->otp = $otp;
             $user->save();
 
-            Mail::to($req->email)->send(new EmailVerification('Sir/Madam',$otp));
-
-            return redirect(route('verify-email'))->with('email',$req->email);
+            if(!empty($additionalVar)){
+                return json_encode(array('email'=>$user->email ,'success'=>true));
+            }else{
+                Mail::to($req->email)->send(new EmailVerification('Sir/Madam',$otp));   
+                return redirect(route('verify-email'))->with('email',$req->email);
+            }
 
         } catch (\Throwable $th) {
             return redirect()->back()->with('error',"Something unexpected happened on server. ".$th->getMessage());
@@ -180,6 +195,8 @@ class AuthenticationController extends ClientBaseController
             ])->id;
 
             $user->save();
+            print_r($user->id);
+            die();
 
             Wallet::create(['user_id'=>$user->id]);
 
@@ -247,11 +264,19 @@ class AuthenticationController extends ClientBaseController
     // Login
     public function login(Request $request)
     {
+        $additionalVar = $request->input('additionalVar1'); 
+        
+
         if(!Auth::attempt(
             ['email' => $request->email,'password' => $request->password,'status' => 1,'type' => 'customer'],
             $request->remember_me == 'on' ? true : false
         )){
-            return redirect()->back()->with('error','Email or password is not correct or your account is not active');
+            
+            if(!empty($additionalVar)){
+                return json_encode(array('success'=>false,'message'=>"Email or password is not correct or your account is not active"));
+            }else{
+                return redirect()->back()->with('error','Email or password is not correct or your account is not active');
+            }
         }
 
         User::find(auth()->id())->update([
@@ -259,7 +284,11 @@ class AuthenticationController extends ClientBaseController
             'default_password' => null,
         ]);
 
-        return redirect(route('dashboard'));
+        if(!empty($additionalVar)){
+            return json_encode(array('success'=>true,'message'=>"Login Suceexfully"));
+        }else{
+            return redirect(route('dashboard'));
+        }
     }
 
     // Logout
