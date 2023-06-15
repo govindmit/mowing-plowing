@@ -210,4 +210,5 @@ class SnowPlowingController extends ClientBaseController
             return response()->json($th->getMessage(),500);
         }
     }
+
 }
