@@ -150,8 +150,9 @@ class AuthenticationController extends ClientBaseController
 
     public function registration(Request $req)
     {
-        $user_ip = $req->ip();
-        $property_id = ($req->input('propertyId'));
+        $user_ip = $req->user_ip;
+        $property_id = $req->property_id;
+        $order_id =$req->order_id;
         $summaryRegister = $req->input('summaryRegister');
         try {
             $validator = Validator::make($req->all(), [
@@ -244,7 +245,7 @@ class AuthenticationController extends ClientBaseController
             }
 
             $lawnMowingController = new LawnMowingController();
-            $lawnMowingController->updateUserDetail($user_ip, $property_id, $user);
+            $lawnMowingController->updateUserDetail($user_ip, $property_id, $user->id,$order_id);
 
             Auth::login($user);
 

@@ -258,10 +258,9 @@ class LawnMowingController extends ClientBaseController
                 $recurring_order->admin_commission_perc   = $adminCommission;
                 $recurring_order->gate_code          = $order->gate_code;
                 $recurring_order->instructions       = $order->instructions;
-                $recurring_order->save();
 
                 if(!$orderExits){
-                    $order->save();
+                    $recurring_order->save();
                 }
             }
 
@@ -319,11 +318,10 @@ class LawnMowingController extends ClientBaseController
         }
     }
 
-    public function updateUserDetail($user_ip, $property_id,$user)
+    public function updateUserDetail($user_ip, $property_id,$user_id,$order_id)
     {
-        $user_id = $user->id;
         Property::whereId($property_id)->whereUserIp($user_ip)->update(['user_id' => $user_id]);
-        Order::wherePropertyId($property_id)->whereUserIp($user_ip)->update(['user_id' => $user_id]);
-        RecurringHistory::wherePropertyId($property_id)->whereUserIp($user_ip)->update(['user_id' => $user_id]);
+        Order::whereOrderId($order_id)->wherePropertyId($property_id)->whereUserIp($user_ip)->update(['user_id' => $user_id]);
+        RecurringHistory::whereOrderId($order_id)->wherePropertyId($property_id)->whereUserIp($user_ip)->update(['user_id' => $user_id]);
     }
 }

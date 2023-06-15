@@ -111,7 +111,9 @@
             </div>
         </div>
         <div class="form-group mt-4">
-            <!-- <input name="email" type="hidden" value="{{$email ?? old('email')}}"> -->
+            <input name="property_id" id="property_id" type="hidden" value="{{ $order->property_id }}">
+            <input name="user_ip" id="user_ip" type="hidden" value="{{ $order->user_ip }}">
+            <input name="order_id" id="order_id" type="hidden" value="{{ $order->order_id }}">
             <button class="btn btn-primary btn-block w-100 fw-light" id="sign-up" type="submit">Create Account</button>
         </div>
     </form>
