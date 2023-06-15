@@ -26,6 +26,9 @@
             <a class="link" href="{{ route('forget-password.email') }}">Forget password?</a>
         </div>
         <div class="form-group mt-4 pt-2">
+            <input name="property_id" id="property_id" type="hidden" value="{{ $order->property_id }}">
+            <input name="user_ip" id="user_ip" type="hidden" value="{{ $order->user_ip }}">
+            <input name="order_id" id="order_id" type="hidden" value="{{ $order->order_id }}">
             <input name="summaryLogin" id="summaryLogin" type="hidden" value="1">
             <button class="btn btn-primary btn-block w-100 fw-light" type="submit">Login</button>
         </div>
@@ -109,6 +112,7 @@
             <input name="summaryRegister" id="summaryRegister" type="hidden" value="1">
             <button class="btn btn-primary btn-block w-100 fw-light" id="sign-up" type="submit">Create Account</button>
         </div>
+        <p>Already have an account?<a class="ms-2" id="log-in">Log in</a></p>
     </form>
 </div>
 
@@ -148,6 +152,11 @@
             $('#registration-form').show();
             loadGoogleMapsScript();
         });
+        $('#log-in').click(function(event) {
+            event.preventDefault();
+            $('#login').show();
+            $('#registration-form').hide();
+        });
 
         $('#login-form').submit(function(event) {
             event.preventDefault();
@@ -165,6 +174,10 @@
                     if (res && res.success === true) {
                         successMessage(res.message);
                         $('#get-summary').trigger('click');
+                        var itemsToRemove = ['redirectCategory', 'redirectType', 'address', 'lat', 'lng'];
+                        for (var i = 0; i < itemsToRemove.length; i++) {
+                            localStorage.removeItem(itemsToRemove[i]);
+                        }
                     } else if (res && res.success === false) {
                         errorMessage(res.message);
                     }
@@ -194,6 +207,10 @@
                     if (res && res.success === true) {
                         successMessage(res.message);
                         $('#get-summary').trigger('click');
+                        var itemsToRemove = ['redirectCategory', 'redirectType', 'address', 'lat', 'lng'];
+                        for (var i = 0; i < itemsToRemove.length; i++) {
+                            localStorage.removeItem(itemsToRemove[i]);
+                        }
                     } else if (res && res.success === false) {
                         errorMessage(res.message);
                     }

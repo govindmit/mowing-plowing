@@ -244,11 +244,11 @@ class AuthenticationController extends ClientBaseController
                 );
             }
 
+            Auth::login($user);
+            
             $lawnMowingController = new LawnMowingController();
             $lawnMowingController->updateUserDetail($user_ip, $property_id, $user->id,$order_id);
-
-            Auth::login($user);
-
+            
             if (!empty($summaryRegister)) {
                 return response()->json([
                     'success' => true,
@@ -301,8 +301,10 @@ class AuthenticationController extends ClientBaseController
     public function login(Request $request)
     {
         $summaryLogin = $request->input('summaryLogin');
-
-
+        $user_ip = $request->user_ip;
+        $property_id = $request->property_id;
+        $order_id =$request->order_id;
+        
         if (!Auth::attempt(
             ['email' => $request->email, 'password' => $request->password, 'status' => 1, 'type' => 'customer'],
             $request->remember_me == 'on' ? true : false
@@ -314,6 +316,10 @@ class AuthenticationController extends ClientBaseController
                 return redirect()->back()->with('error', 'Email or password is not correct or your account is not active');
             }
         }
+
+        $user = Auth::user();
+        $lawnMowingController = new LawnMowingController();
+        $lawnMowingController->updateUserDetail($user_ip, $property_id, $user->id,$order_id);
 
         User::find(auth()->id())->update([
             'last_login_device' => 'web',
