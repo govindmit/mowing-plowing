@@ -26,17 +26,9 @@
             <a class="link" href="{{ route('forget-password.email') }}">Forget password?</a>
         </div>
         <div class="form-group mt-4 pt-2">
+            <input name="summaryLogin" id="summaryLogin" type="hidden" value="1">
             <button class="btn btn-primary btn-block w-100 fw-light" type="submit">Login</button>
         </div>
-        <!-- <div class="login-social-title">
-            <h5 class="fw-normal">Log in with</h5>
-        </div>
-        <div class="form-group">
-            <ul class="login-social">
-                <li><a href="{{ route('auth.google') }}" target="_blank"><i class="fab fa-google text-danger"></i></a></li>
-                {{-- <li><a href="https://twitter.com" target="_blank"><i class="fab fa-apple fs-5 text-dark"></i></a></li> --}}
-            </ul>
-        </div> -->
         <p>Don't have an account?<a id="signup" class="ms-2" href="#">Sign Up</a></p>
     </form>
 </div>
@@ -112,7 +104,10 @@
             </div>
         </div>
         <div class="form-group mt-4">
-            <!-- <input name="email" type="hidden" value="{{$email ?? old('email')}}"> -->
+            <input name="property_id" id="property_id" type="hidden" value="{{ $order->property_id }}">
+            <input name="user_ip" id="user_ip" type="hidden" value="{{ $order->user_ip }}">
+            <input name="order_id" id="order_id" type="hidden" value="{{ $order->order_id }}">
+            <input name="summaryRegister" id="summaryRegister" type="hidden" value="1">
             <button class="btn btn-primary btn-block w-100 fw-light" id="sign-up" type="submit">Create Account</button>
         </div>
     </form>
@@ -147,7 +142,6 @@
     }
 
     $(document).ready(function() {
-        // $('#signUp').hide();
         $('#registration-form').hide();
         $('#signup').click(function(event) {
             event.preventDefault();
@@ -158,7 +152,7 @@
 
         $('#login-form').submit(function(event) {
             event.preventDefault();
-            var data = $(this).serialize() + '&summaryLogin=' + encodeURIComponent('1');
+            var data = $(this).serialize();
 
             $.ajax({
                 headers: {
@@ -183,21 +177,11 @@
             });
         });
 
-        function extractPropertyIdFromUrl(url) {
-            var regex = /\/lawn-mowing\/(\d+)/;
-            var matches = url.match(regex);
-            if (matches && matches.length > 1) {
-                return matches[1];
-            }
-            return null;
-        }
+
 
         $('#registration').submit(function(event) {
             event.preventDefault();
-            var currentUrl = window.location.href;
-            var propertyId = extractPropertyIdFromUrl(currentUrl);
-            console.log(propertyId);
-            var data = $(this).serialize() + '&summaryRegister=' + encodeURIComponent('1') + '&propertyId=' + encodeURIComponent(propertyId);
+            var data = $(this).serialize();
 
             $.ajax({
                 headers: {
