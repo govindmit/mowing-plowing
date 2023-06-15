@@ -1,8 +1,7 @@
 <div id="login">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" id="login-form">
         @csrf
-        <h4>Login</h4>
-        <h6>Login to your account.</h6>
+        <h6>If you already have account. Please login to pay.</h6>
         <div class="form-group mt-5">
             <label>Email Address<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text"> <i class="fa-solid fa-envelope fs-5"></i></span>
@@ -40,8 +39,7 @@
 <div id="registration-form">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" enctype="multipart/form-data" id="registration">
         @csrf
-        <h4>Create your account </h4>
-        <h6>Enter your personal details</h6>
+        <h6>Enter your personal details to create an account.</h6>
         <div class="form-group mt-5">
             <label>Your Name<span class="text-danger">*</span></label>
             <div class="small-group">

@@ -188,6 +188,14 @@
 
 <script>
 
+    function triggerPurchaseEvent(orderId, grandTotal) {
+        fbq('track', 'Purchase', {
+            currency: "USD",
+            value: '$' + grandTotal,
+            orderId: orderId
+        });
+    }
+
     $('#tip').on('change',function(){
         $.ajax({
             headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
@@ -209,6 +217,8 @@
     })
 
     $('#pay').on('click',function(){
+        var orderId = "{{ $order->id }}";
+        var grandTotal = "{{ $order->grand_total }}";
         $(this).prop('disabled', true);
         $.ajax({
             headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
@@ -221,6 +231,7 @@
             success: function(res){
                 if(res.success){
                     successMessage(res.message)
+                    triggerPurchaseEvent(orderId, grandTotal);
                     $('#pay-btn').click()
                 }
             },
