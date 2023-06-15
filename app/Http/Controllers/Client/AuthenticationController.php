@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Client;
+
+use App\Http\Controllers\Client\LawnMowingController;
 use App\Http\Requests\Signup;
 use App\Mail\EmailVerification;
 use App\Models\Admin;
@@ -16,24 +18,25 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\City;
 use App\Models\CityList;
+
 class AuthenticationController extends ClientBaseController
 {
     use OrderTrait;
 
     public function signupIndex(Request $req)
     {
-        return view('client.auth.signup',$this->data);
+        return view('client.auth.signup', $this->data);
     }
 
-    public function homePage(){
+    public function homePage()
+    {
         $sekected_city = City::all()->pluck('name');
-        $city_list = CityList::whereIn('ID',$sekected_city)->with('state')->get();
-        return view('homepage',compact('city_list'));
+        $city_list = CityList::whereIn('ID', $sekected_city)->with('state')->get();
+        return view('homepage', compact('city_list'));
     }
 
     public function signup(Request $req)
     {
-        $additionalVar = $req->input('additionalVar1'); 
         try {
 
             $validator = Validator::make($req->all(), [
@@ -41,33 +44,24 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => 'required|max:10'
             ]);
 
-
-            if (!empty($additionalVar)) {
-                $additionalValidator = Validator::make($req->all(), [
-                    'additionalVar1' => 'required', // Add validation for additionalVar1
-                ]);
-        
-                if ($additionalValidator->fails()) {
-                    return back()->withErrors($additionalValidator)->withInput();
-                }
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
             }
 
-            if($validator->fails()) {return back()->withErrors($validator)->withInput();}
+            $req['phone_number'] = "+1" . $req->phone_number;
 
-            $req['phone_number'] = "+1".$req->phone_number;
+            $userWithPhoneNumber = User::where('phone_number', $req->phone_number)->first();
 
-            $userWithPhoneNumber = User::where('phone_number',$req->phone_number)->first();
-
-            if($userWithPhoneNumber && $userWithPhoneNumber->phone_number_verified_at && $userWithPhoneNumber->password) {
-                return back()->with('error','Phone number has been taken');
+            if ($userWithPhoneNumber && $userWithPhoneNumber->phone_number_verified_at && $userWithPhoneNumber->password) {
+                return back()->with('error', 'Phone number has been taken');
             } elseif ($userWithPhoneNumber && $userWithPhoneNumber->status == 2) {
                 $userWithPhoneNumber->delete();
             }
 
-            $userWithEmail = User::where('email',$req->email)->first();
+            $userWithEmail = User::where('email', $req->email)->first();
 
-            if($userWithEmail && $userWithEmail->email_verified_at && $userWithEmail->password) {
-                return back()->with('error','Email has been taken');
+            if ($userWithEmail && $userWithEmail->email_verified_at && $userWithEmail->password) {
+                return back()->with('error', 'Email has been taken');
             } elseif ($userWithEmail && $userWithEmail->status == 2) {
                 $userWithEmail->delete();
             }
@@ -77,26 +71,22 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => $req->phone_number,
                 'type' => 'customer',
             ]);
-            $otp = rand(111111,999999);
+            $otp = rand(111111, 999999);
             $user->otp = $otp;
             $user->save();
 
-            if(!empty($additionalVar)){
-                return json_encode(array('email'=>$user->email ,'success'=>true));
-            }else{
-                Mail::to($req->email)->send(new EmailVerification('Sir/Madam',$otp));   
-                return redirect(route('verify-email'))->with('email',$req->email);
-            }
+            Mail::to($req->email)->send(new EmailVerification('Sir/Madam', $otp));
 
+            return redirect(route('verify-email'))->with('email', $req->email);
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error',"Something unexpected happened on server. ".$th->getMessage());
+            return redirect()->back()->with('error', "Something unexpected happened on server. " . $th->getMessage());
         }
     }
 
     public function verifyEmailIndex()
     {
-        if(!session('email')) return redirect(route('web.login'));
-        return view('client.auth.verify-email',['email' => session('email')]);
+        if (!session('email')) return redirect(route('web.login'));
+        return view('client.auth.verify-email', ['email' => session('email')]);
     }
 
     public function verifyEmail(Request $req)
@@ -104,74 +94,109 @@ class AuthenticationController extends ClientBaseController
         try {
             $data = $req->except('_token');
             $otp = '';
-            foreach($data['otp'] as $key=>$value) {$otp .= $value;};
-            $user = User::where('email',$req->email)->first();
+            foreach ($data['otp'] as $key => $value) {
+                $otp .= $value;
+            };
+            $user = User::where('email', $req->email)->first();
 
-            if($otp != $user->otp){
-                return redirect()->back()->with(['email'=>$req->email,'error'=>"Your verification code is not correct"]);
+            if ($otp != $user->otp) {
+                return redirect()->back()->with(['email' => $req->email, 'error' => "Your verification code is not correct"]);
             } else {
                 $user->email_verified_at = now();
-                  $otp = rand(111111,999999);
+                $otp = rand(111111, 999999);
                 $user->otp = $otp;
                 $user->save();
 
-                $this->sendSms($user->phone_number,'This is your 6 digit code '.$otp);
+                $this->sendSms($user->phone_number, 'This is your 6 digit code ' . $otp);
 
-                return redirect(route('verify-phone-number'))->with(['success'=>'Email has been verified. Now kindly verify phone number','phone_number'=>$user->phone_number,'email'=>$req->email]);
+                return redirect(route('registration'))->with(['success' => 'Phone number has been verified. Now kindly create your account', 'email' => $user->email]);
             }
 
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error',"Something unexpected happened on server. ".$th->getMessage());
+            return redirect()->back()->with('error', "Something unexpected happened on server. " . $th->getMessage());
         }
     }
 
     public function verifyPhoneNumberIndex()
     {
-        if(!session('phone_number') || !session('email')) return redirect(route('signup'));
-        return view('client.auth.verify-phone-number',['phone_number' => session('phone_number'),'email' => session('email')]);
+        if (!session('phone_number') || !session('email')) return redirect(route('signup'));
+        return view('client.auth.verify-phone-number', ['phone_number' => session('phone_number'), 'email' => session('email')]);
     }
 
     public function verifyPhoneNumber(Request $req)
     {
         $data = $req->except('_token');
         $otp = '';
-        foreach($data['otp'] as $key=>$value) {$otp .= $value;};
-        $user = User::where('email',$req->email)->first();
+        foreach ($data['otp'] as $key => $value) {
+            $otp .= $value;
+        };
+        $user = User::where('email', $req->email)->first();
 
-        if($otp != $user->otp){
-            return redirect()->back()->with(['email'=>$user->email,'phone_number'=>$user->phone_number,'error'=>"Your verification code is not correct"]);
+        if ($otp != $user->otp) {
+            return redirect()->back()->with(['email' => $user->email, 'phone_number' => $user->phone_number, 'error' => "Your verification code is not correct"]);
         } else {
             $user->phone_number_verified_at = now();
             $user->otp = null;
             $user->save();
-            return redirect(route('registration'))->with(['success'=>'Phone number has been verified. Now kindly create your account','email'=>$user->email]);
+            return redirect(route('registration'))->with(['success' => 'Phone number has been verified. Now kindly create your account', 'email' => $user->email]);
         }
     }
 
     public function registrationIndex()
     {
-        if(session('email')) return view('client.auth.registration',['email' => session('email')]);
+        if (session('email')) return view('client.auth.registration', ['email' => session('email')]);
         return redirect(route('signup'));
     }
 
     public function registration(Request $req)
     {
+        $user_ip = $req->ip();
+        $property_id = ($req->input('propertyId'));
+        $summaryRegister = $req->input('summaryRegister');
         try {
             $validator = Validator::make($req->all(), [
-                'email' => 'required',
+                'email' => 'required|email|unique:users,email',
                 'first_name' => 'required',
                 'last_name' => 'required',
+                'phone_number' => 'required|unique:users',
                 'password' => 'required|confirmed',
                 'image' => 'mimes:jpg,jpeg,png',
                 'address' => 'required',
                 'lat' => 'required',
                 'lng' => 'required',
             ]);
-            if ($validator->fails()) {return back()->withInput()->with(['email' => $req->email,'errors' => $validator->errors()]);}
 
-            $user = User::where('email',$req->email)->first();
+            if ($validator->fails()) {
+                if (!empty($summaryRegister)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $validator->errors(),
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $validator->errors(),
+                        'email' => $req->input('email'),
+                    ]);
+                }
+            }
+            
+            if (!empty($summaryRegister)) {
+                $user = User::create([
+                    'email' => $req->email,
+                    'phone_number' => $req->phone_number,
+                    'type' => 'customer',
+                ]);
+            }
 
-            if(!$user) {return back()->with('error','Account does not exist with this email');}
+           
+            $user = User::where('email',$req->email)->first();   
+            if(!$user) {
+                if (empty($summaryRegister)) {
+                    return back()->with('error','Account does not exist with this email');
+                }
+            }
+
 
             $user->first_name = $req->first_name;
             $user->last_name = $req->last_name;
@@ -181,33 +206,34 @@ class AuthenticationController extends ClientBaseController
             $user->lng = $req->lng;
             $user->referral_link = "/referral-link/". Str::random(16);
             $user->status = 1;
-
-            if($req->image){
-                $foldername = '/uploads/clients/profile pics/';
-                $filename = time().'-'.rand(0000000,9999999).'.'.$req->file('image')->extension();
-                $req->file('image')->move(public_path().$foldername,$filename);
-                $user->image = $foldername.$filename;
+            
+       
+            
+            if ($req->hasFile('image')) {
+                $foldername = '/uploads/clients/profile-pics/';
+                $filename = time() . '-' . rand(0000000, 9999999) . '.' . $req->file('image')->extension();
+                $req->file('image')->move(public_path() . $foldername, $filename);
+                $user->image = $foldername . $filename;
             }
-
+            
             $user->customer_id = $this->stripe->customers->create([
-                'name' => $user->first_name.' '.$user->last_name,
+                'name' => $user->first_name . ' ' . $user->last_name,
                 'email' => $user->email,
-            ])->id;
-
+                ])->id;
+                
             $user->save();
-            print_r($user->id);
-            die();
+            Wallet::create(['user_id' => $user->id]);
 
-            Wallet::create(['user_id'=>$user->id]);
-
-            if($req->referral_link){
-                $referred_by = User::whereReferralLink(substr($req->referral_link,-31))->first();
-                if(!$referred_by) return redirect()->back()->with('error',"This referral link does not exist.");
+            if ($req->input('referral_link')) {
+                $referred_by = User::whereReferralLink(substr($req->input('referral_link'), -31))->first();
+                if (!$referred_by) {
+                    return redirect()->back()->with('error', "This referral link does not exist.");
+                }
 
                 $user->referred_by = $referred_by->id;
                 $user->save();
 
-                Wallet::whereUserId($referred_by->id)->first()->increment('amount',settings('referral_bonus'));
+                Wallet::whereUserId($referred_by->id)->first()->increment('amount', settings('referral_bonus'));
 
                 sendNotification(
                     $referred_by->id,
@@ -217,12 +243,21 @@ class AuthenticationController extends ClientBaseController
                 );
             }
 
+            $lawnMowingController = new LawnMowingController();
+            $lawnMowingController->updateUserDetail($user_ip, $property_id, $user);
+
             Auth::login($user);
 
-            return redirect()->route('dashboard')->with('success',"Welcome to Mowing and Plowing");
-
+            if (!empty($summaryRegister)) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Registered Successfully",
+                ]);
+            } else {
+                return redirect()->route('dashboard')->with('success', "Welcome to Mowing and Plowing");
+            }
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error',"Something unexpected happened on server. ".$th->getMessage());
+            return redirect()->back()->with('error', "Something unexpected happened on the server. " . $th->getMessage());
         }
     }
 
@@ -230,33 +265,33 @@ class AuthenticationController extends ClientBaseController
     public function resendCode(Request $req)
     {
         try {
-            if($req->resend_for === 'email'){
-                $user = User::where('email',$req->email)->first();
+            if ($req->resend_for === 'email') {
+                $user = User::where('email', $req->email)->first();
             } elseif ($req->resend_for === 'admin-email') {
-                $user = Admin::where('email',$req->email)->first();
+                $user = Admin::where('email', $req->email)->first();
             } elseif ($req->resend_for === 'phone_number') {
-                $user = User::where('phone_number',$req->phone_number)->first();
+                $user = User::where('phone_number', $req->phone_number)->first();
             }
-            $otp = rand(111111,999999);
+            $otp = rand(111111, 999999);
             $user->otp = $otp;
             $user->save();
 
-            if($req->resend_for === 'email' || $req->resend_for === 'admin-email'){
+            if ($req->resend_for === 'email' || $req->resend_for === 'admin-email') {
                 Mail::to($req->email)->send(new EmailVerification($user->first_name, $otp));
             } elseif ($req->resend_for === 'phone_number') {
-                $this->sendSms($user->phone_number,'This is your 6 digit code '.$otp);
+                $this->sendSms($user->phone_number, 'This is your 6 digit code ' . $otp);
             }
 
-            return response()->json(['success' => true,'message' => 'New verification code has been sent']);
+            return response()->json(['success' => true, 'message' => 'New verification code has been sent']);
         } catch (\Throwable $th) {
-            return response()->json(['success' => false,'message' => 'Something unexpected happened on server. '.$th->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Something unexpected happened on server. ' . $th->getMessage()]);
         }
     }
 
     // Login Index
     public function loginIndex(Request $req)
     {
-        if(Auth::check()) return redirect(route('dashboard'));
+        if (Auth::check()) return redirect(route('dashboard'));
 
         return view('client.auth.login');
     }
@@ -264,18 +299,18 @@ class AuthenticationController extends ClientBaseController
     // Login
     public function login(Request $request)
     {
-        $additionalVar = $request->input('additionalVar1'); 
-        
+        $summaryLogin = $request->input('summaryLogin');
 
-        if(!Auth::attempt(
-            ['email' => $request->email,'password' => $request->password,'status' => 1,'type' => 'customer'],
+
+        if (!Auth::attempt(
+            ['email' => $request->email, 'password' => $request->password, 'status' => 1, 'type' => 'customer'],
             $request->remember_me == 'on' ? true : false
-        )){
-            
-            if(!empty($additionalVar)){
-                return json_encode(array('success'=>false,'message'=>"Email or password is not correct or your account is not active"));
-            }else{
-                return redirect()->back()->with('error','Email or password is not correct or your account is not active');
+        )) {
+
+            if (!empty($summaryLogin)) {
+                return json_encode(array('success' => false, 'message' => "Email or password is not correct or your account is not active"));
+            } else {
+                return redirect()->back()->with('error', 'Email or password is not correct or your account is not active');
             }
         }
 
@@ -284,9 +319,9 @@ class AuthenticationController extends ClientBaseController
             'default_password' => null,
         ]);
 
-        if(!empty($additionalVar)){
-            return json_encode(array('success'=>true,'message'=>"Login Suceexfully"));
-        }else{
+        if (!empty($summaryLogin)) {
+            return json_encode(array('success' => true, 'message' => "Login Suceexfully"));
+        } else {
             return redirect(route('dashboard'));
         }
     }
@@ -307,8 +342,8 @@ class AuthenticationController extends ClientBaseController
     {
 
         $req->validate([
-            'email'=>'required|max:255',
-            'phone_number'=>'required|max:255',
+            'email' => 'required|max:255',
+            'phone_number' => 'required|max:255',
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'address' => 'required',
@@ -338,7 +373,7 @@ class AuthenticationController extends ClientBaseController
         // $data = $req->except('_token');
         // User::updateOrCreate(['email' => $data['email']],$data);
 
-        return back()->with('success','Profile updated');
+        return back()->with('success', 'Profile updated');
     }
 
     public function resetPasswordEmail(Request $req)
@@ -351,15 +386,15 @@ class AuthenticationController extends ClientBaseController
         $email = $req->email;
         $user = User::whereEmail($req->email)->first();
 
-        if(!$user->otp) {
-              $otp = rand(111111,999999);
+        if (!$user->otp) {
+            $otp = rand(111111, 999999);
             $user->otp = $otp;
             $user->save();
 
-            Mail::to($req->email)->send(new EmailVerification('Sir/Madam',$otp));
+            Mail::to($req->email)->send(new EmailVerification('Sir/Madam', $otp));
         }
 
-        return view('client.auth.verify-reset-password-email',compact('email'));
+        return view('client.auth.verify-reset-password-email', compact('email'));
     }
 
 
@@ -368,26 +403,28 @@ class AuthenticationController extends ClientBaseController
         try {
             $data = $req->except('_token');
             $otp = '';
-            foreach($data['otp'] as $key=>$value) {$otp .= $value;};
-            $user = User::where('email',$req->email)->first();
+            foreach ($data['otp'] as $key => $value) {
+                $otp .= $value;
+            };
+            $user = User::where('email', $req->email)->first();
 
-            if($otp != $user->otp){
-                return redirect()->back()->with(['error'=>"Your verification code is not correct"]);
+            if ($otp != $user->otp) {
+                return redirect()->back()->with(['error' => "Your verification code is not correct"]);
             } else {
                 $user->otp = null;
                 $user->save();
-                return redirect(route('forget-password.reset-password.index'))->with('email',$req->email);
+                return redirect(route('forget-password.reset-password.index'))->with('email', $req->email);
             }
 
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error',"Something unexpected happened on server. ".$th->getMessage());
+            return redirect()->back()->with('error', "Something unexpected happened on server. " . $th->getMessage());
         }
     }
 
     public function resetPasswordIndex(Request $req)
     {
-        if(!session('email')) return redirect(route('web.login'));
-        return view('client.auth.reset-password',['email' => session('email')]);
+        if (!session('email')) return redirect(route('web.login'));
+        return view('client.auth.reset-password', ['email' => session('email')]);
     }
 
     public function resetPassword(Request $req)
@@ -395,13 +432,15 @@ class AuthenticationController extends ClientBaseController
         $validator = Validator::make($req->all(), [
             'password' => 'required|confirmed',
         ]);
-        if ($validator->fails()) {return back()->with(['errors'=>$validator->errors(),'email'=>$req->email]);}
+        if ($validator->fails()) {
+            return back()->with(['errors' => $validator->errors(), 'email' => $req->email]);
+        }
 
-        $user = User::where('email',$req->email)->first();
+        $user = User::where('email', $req->email)->first();
         $user->password = Hash::make($req->password);
         $user->save();
 
-        return redirect(route('web.login'))->with('success',"Password reset successfully");
+        return redirect(route('web.login'))->with('success', "Password reset successfully");
     }
 
     public function authCheck()
@@ -413,8 +452,8 @@ class AuthenticationController extends ClientBaseController
     {
         try {
             $user = User::find(auth()->id());
-            $user->email = $user->email."-account-deleted-".rand(1111111,9999999);
-            $user->phone_number = $user->phone_number."-account-deleted-".rand(1111111,9999999);
+            $user->email = $user->email . "-account-deleted-" . rand(1111111, 9999999);
+            $user->phone_number = $user->phone_number . "-account-deleted-" . rand(1111111, 9999999);
             $user->google_id = null;
             $user->status = 3;
             $user->save();

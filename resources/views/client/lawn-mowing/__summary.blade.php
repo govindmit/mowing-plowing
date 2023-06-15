@@ -202,6 +202,7 @@
             @else
             @include('client.lawn-mowing.login')
             @endif
+            </div>
         </div>
     </div>
 </div>

@@ -28,7 +28,7 @@
         <div class="form-group mt-4 pt-2">
             <button class="btn btn-primary btn-block w-100 fw-light" type="submit">Login</button>
         </div>
-        <div class="login-social-title">
+        <!-- <div class="login-social-title">
             <h5 class="fw-normal">Log in with</h5>
         </div>
         <div class="form-group">
@@ -36,52 +36,11 @@
                 <li><a href="{{ route('auth.google') }}" target="_blank"><i class="fab fa-google text-danger"></i></a></li>
                 {{-- <li><a href="https://twitter.com" target="_blank"><i class="fab fa-apple fs-5 text-dark"></i></a></li> --}}
             </ul>
-        </div>
-        <p>Don't have an account?<a id="signup" class="ms-2" href="#" >Sign Up</a></p>
+        </div> -->
+        <p>Don't have an account?<a id="signup" class="ms-2" href="#">Sign Up</a></p>
     </form>
 </div>
 
-<div id="signUp">
-    <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" id="sign-up">
-        @csrf
-        <h4>Create your account </h4>
-        <div class="text-center mt-5 mb-4">
-            <h5>Verify email and number</h5>
-        </div>
-        <span class="">What's your email and phone number?</span>
-        <br>
-        <span class="fs-12">We'll send a code to verfiy your email and number.</span>
-
-        <div class="form-group mt-5">
-            <label>Email Address<span class="text-danger">*</span></label>
-            <div class="input-group"><span class="input-group-text"><i class="fa-solid fa-envelope fs-5"></i></span>
-                <input class="form-control" type="email" name="email" required="" placeholder="abc@gmail.com" value="{{old('email')}}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Phone Number<span class="text-danger">*</span></label>
-            <div class="input-group"><span class="input-group-text">+1</span>
-                <input class="form-control" type="text" name="phone_number" maxlength="10" required="" placeholder="Phone Number" value="{{old('phone_number')}}">
-            </div>
-        </div>
-
-        <div class="form-group mt-5 pt-5">
-            <button class="btn btn-primary btn-block w-100 fw-light py-2" id="next" type="submit">NEXT</button>
-        </div>
-        <div class="login-social-title mt-4 ">
-            <h5 class="fw-normal">Sign up with</h5>
-        </div>
-        <div class="form-group">
-            <ul class="login-social">
-                <li><a href="{{ route('auth.google') }}" target="_blank"><i class="fab fa-google text-danger"></i></a>
-                </li>
-                {{-- <li><a href="https://www.apple.com/login" target="_blank"><i
-                            class="fab fa-apple fs-5 text-dark"></i></a></li> --}}
-            </ul>
-        </div>
-        <p>Already have an account?<a class="ms-2"  id="signin" href="">Log in</a></p>
-    </form>
-</div>
 
 <div id="registration-form">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" enctype="multipart/form-data" id="registration">
@@ -117,13 +76,25 @@
             </div>
         </div>
         <div class="form-group">
+            <label>Email Address<span class="text-danger">*</span></label>
+            <div class="input-group"><span class="input-group-text"><i class="fa-solid fa-envelope fs-5"></i></span>
+                <input class="form-control" type="email" name="email" required="" placeholder="abc@gmail.com" value="{{$email ?? old('email')}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Phone Number<span class="text-danger">*</span></label>
+            <div class="input-group"><span class="input-group-text">+1</span>
+                <input class="form-control" type="text" name="phone_number" maxlength="10" required="" placeholder="Phone Number" value="{{old('phone_number')}}">
+            </div>
+        </div>
+        <div class="form-group">
             <label>Address<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text">
                     <i class="fa-regular fa-pen-to-square"></i>
                 </span>
-                <input id="location" class="form-control" type="text" name="address" required="" placeholder="Enter address">
-                <input type="hidden" name="lat" id="lat">
-                <input type="hidden" name="lng" id="lng">
+                <input id="reglocation" class="form-control" type="text" name="address" required="" placeholder="Enter address">
+                <input type="hidden" name="lat" id="reglat">
+                <input type="hidden" name="lng" id="reglng">
             </div>
         </div>
         <div class="form-group">
@@ -141,41 +112,53 @@
             </div>
         </div>
         <div class="form-group mt-4">
-            <input name="email" type="hidden" value="{{$email ?? old('email')}}">
+            <!-- <input name="email" type="hidden" value="{{$email ?? old('email')}}"> -->
             <button class="btn btn-primary btn-block w-100 fw-light" id="sign-up" type="submit">Create Account</button>
         </div>
     </form>
 </div>
 
 <script>
+    function loadGoogleMapsScript() {
+        var script = document.createElement("script");
+        script.src = "https://maps.google.com/maps/api/js?key={{ config('google.GOOGLE_MAPS_APIKEY') }}&libraries=places";
+        script.type = "text/javascript";
+        script.async = true;
+        script.defer = true;
+        script.addEventListener('load', initializeGoogleMaps);
+
+        document.head.appendChild(script);
+    }
+
+    function initializeGoogleMaps() {
+        var input = document.getElementById('reglocation');
+        var options = {
+            componentRestrictions: {
+                country: ["us"]
+            }
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            document.getElementById('reglat').value = place.geometry.location.lat();
+            document.getElementById('reglng').value = place.geometry.location.lng();
+        });
+    }
+
     $(document).ready(function() {
-        $('#signUp').hide();
+        // $('#signUp').hide();
         $('#registration-form').hide();
         $('#signup').click(function(event) {
             event.preventDefault();
             $('#login').hide();
-            // $('#registration-form').hide();
-            $('#signUp').show();
+            $('#registration-form').show();
+            loadGoogleMapsScript();
         });
-        $('#signin').click(function(event) {
-            event.preventDefault();
-            $('#login').show();
-            $('#signUp').hide();
-            // $('#registration-form').hide();
-        });
-
-        // $('#next').click(function(event) {
-        //     event.preventDefault();
-        //     $('#login').hide();
-        //     $('#signUp').hide();
-        //     $('#registration-form').show();
-        // });
-
-        // Rest of your JavaScript code
 
         $('#login-form').submit(function(event) {
             event.preventDefault();
-            var data = $(this).serialize() + '&additionalVar1=' + encodeURIComponent('1');
+            var data = $(this).serialize() + '&summaryLogin=' + encodeURIComponent('1');
 
             $.ajax({
                 headers: {
@@ -190,7 +173,6 @@
                         successMessage(res.message);
                         $('#get-summary').trigger('click');
                     } else if (res && res.success === false) {
-                        console.log(res);
                         errorMessage(res.message);
                     }
                 },
@@ -201,40 +183,21 @@
             });
         });
 
-
-        $('#sign-up').submit(function(event) {
-            event.preventDefault();
-            var data = $(this).serialize() + '&additionalVar1=' + encodeURIComponent('1');
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-                url: "{{ route('signup') }}",
-                type: 'post',
-                data: data,
-                dataType: 'json',
-                success: function(res) {
-                    console.log(res);
-                    if (res && res.success === true) {
-                    // successMessage(res.message);
-                    $('#registration-form').show();
-                    $('#signUp').hide();
-                    } else if (res && res.success === false) {
-                        errorMessage(res.message);
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                    errorMessage(err.error);
-                }
-            });
-        });
-
+        function extractPropertyIdFromUrl(url) {
+            var regex = /\/lawn-mowing\/(\d+)/;
+            var matches = url.match(regex);
+            if (matches && matches.length > 1) {
+                return matches[1];
+            }
+            return null;
+        }
 
         $('#registration').submit(function(event) {
             event.preventDefault();
-            var data = $(this).serialize() + '&additionalVar1=' + encodeURIComponent('1');
+            var currentUrl = window.location.href;
+            var propertyId = extractPropertyIdFromUrl(currentUrl);
+            console.log(propertyId);
+            var data = $(this).serialize() + '&summaryRegister=' + encodeURIComponent('1') + '&propertyId=' + encodeURIComponent(propertyId);
 
             $.ajax({
                 headers: {
@@ -246,12 +209,12 @@
                 dataType: 'json',
                 success: function(res) {
                     console.log(res);
-                    // if (res && res.success === true) {
-                    // // successMessage(res.message);
-
-                    // } else if (res && res.success === false) {
-                    //     errorMessage(res.message);
-                    // }
+                    if (res && res.success === true) {
+                        successMessage(res.message);
+                        $('#get-summary').trigger('click');
+                    } else if (res && res.success === false) {
+                        errorMessage(res.message);
+                    }
                 },
                 error: function(err) {
                     console.log(err);
