@@ -191,21 +191,9 @@
             });
         });
 
-        function extractPropertyIdFromUrl(url) {
-            var regex = /\/snow-plowing\/\w+\/(\d+)/;
-            var matches = url.match(regex);
-            if (matches && matches.length > 1) {
-                return matches[1];
-            }
-            return null;
-        }
-
         $('#registration').submit(function(event) {
             event.preventDefault();
-            var currentUrl = window.location.href;
-            var propertyId = extractPropertyIdFromUrl(currentUrl);
-            console.log(propertyId);
-            var data = $(this).serialize() + '&summaryRegister=' + encodeURIComponent('1') + '&propertyId=' + encodeURIComponent(propertyId);
+            var data = $(this).serialize() + '&summaryRegister=' + encodeURIComponent('1');
 
 
             $.ajax({
