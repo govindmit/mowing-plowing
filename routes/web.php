@@ -264,49 +264,6 @@ Route::group(['middleware'=>['auth:web','authenticate:web']], function () {
         Route::get('/update-status',[NotificationController::class,'updateStatus'])->name('update-status');
     });
 
-    // // Order Services => Lawn Mowing Service
-    // Route::group(['prefix' => 'lawn-mowing','as' => 'lawn-mowing.'], function () {
-
-    //     Route::get('/',function(){return redirect(route('lawn-mowing.start'));});
-    //     Route::post('/get-cleanups',[LawnMowingController::class,'getCleanUps'])->name('get-cleanups');
-    //     Route::post('/get-estimations',[LawnMowingController::class,'getEstimations'])->name('get-estimations');
-    //     Route::post('/get-order-summary',[LawnMowingController::class,'orderSummary'])->name('get-order-summary');
-    //     Route::post('/update-tip',[LawnMowingController::class,'updateTip'])->name('update-tip');
-    //     Route::post('/apply-coupon-discount',[LawnMowingController::class,'applyCouponDiscount'])->name('apply-coupon');
-    //     Route::post('/remove-coupon-discount',[LawnMowingController::class,'removeCouponDiscount'])->name('remove-coupon');
-    //     Route::post('/pay',[LawnMowingController::class,'pay'])->name('pay');
-
-    //     // Start
-    //     Route::get('/start',[LawnMowingController::class,'startIndex'])->name('start');
-    //     Route::post('/start',[LawnMowingController::class,'start'])->name('start-order');
-
-    //     // Steps
-    //     Route::get('/{property_id}',[LawnMowingController::class,'steps'])->name('steps');
-
-    // });
-
-    // // Order Services => Snow Plowing Service
-    // Route::group(['prefix' => 'snow-plowing','as' => 'snow-plowing.'], function () {
-
-    //     // Route::get('/',function(){return redirect(route('snow-plowing.start'));});
-    //     Route::post('/get-order-summary',[SnowPlowingController::class,'orderSummary'])->name('get-order-summary');
-    //     Route::post('/update-tip',[SnowPlowingController::class,'updateTip'])->name('update-tip');
-    //     Route::post('/apply-coupon-discount',[SnowPlowingController::class,'applyCouponDiscount'])->name('apply-coupon');
-    //     Route::post('/remove-coupon-discount',[SnowPlowingController::class,'removeCouponDiscount'])->name('remove-coupon');
-    //     Route::post('/pay',[SnowPlowingController::class,'pay'])->name('pay');
-
-    //     // Start
-    //     Route::get('/start',[SnowPlowingController::class,'startIndex'])->name('start');
-
-    //     // Address
-    //     Route::get('/{type}',[SnowPlowingController::class,'addressIndex'])->name('address');
-    //     Route::post('/{type}',[SnowPlowingController::class,'address'])->name('address.post');
-
-    //     // Steps
-    //     Route::get('/{type}/{property_id}',[SnowPlowingController::class,'steps'])->name('steps');
-    //     Route::post('/{type}/{property_id}',[SnowPlowingController::class,'order']);
-
-    // });
 });
 
 // For theme designs => Must be at the end of the file

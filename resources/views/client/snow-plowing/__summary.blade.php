@@ -175,7 +175,7 @@
                         </span>
                     </div>
                     @else
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-opener" data-title="Add Card" data-url="{{ route('payments.add-card-form',['order_id'=>$order->id,'type'=>$type ?? '','service' => 'snow-plowing']) }}">Add Card</button>
+                    	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-opener" data-title="Add Card" data-url="{{ route('payments.add-card-form',['order_id'=>$order->id,'type'=>$type ?? '','service' => 'snow-plowing']) }}">Add Card</button>
                     @endif
                     <button type="button" class="btn btn-success px-5" id="pay">Pay</button>
                 </div>
