@@ -223,6 +223,7 @@ class AuthenticationController extends ClientBaseController
                 ])->id;
                 
             $user->save();
+
             Wallet::create(['user_id' => $user->id]);
 
             if ($req->input('referral_link')) {
@@ -403,7 +404,6 @@ class AuthenticationController extends ClientBaseController
 
         return view('client.auth.verify-reset-password-email', compact('email'));
     }
-
 
     public function verifyResetPasswordEmail(Request $req)
     {

@@ -179,27 +179,7 @@
 
     <script>
         $(function() {
-
-            // window.addEventListener('message', (event) => {
-            //     if (event.data?.category) {
-            //         if(event.data.category == 'lawn-mowing') {
-            //             $('#lawn-mowing-form').submit()
-            //         } else {
-            //             $('#snow-plowing-form').attr('action',"{{ route('snow-plowing.address.post',['type'=>'_type_']) }}".replace('_type_',event.data.type))
-            //             $('#snow-plowing-form').submit()
-            //         }
-            //     }
-            // });
-
-            $('#lawn-mowing').click(function(){
-                // $.ajax({
-                //     url: "{{ route('auth-check') }}",
-                //     type: 'get',
-                //     success: function(res){
-                //         if(res.authenticated){
-                //             $('#lawn-mowing-form').submit()
-                //         } else {
-                            
+            $('#lawn-mowing').click(function(){       
                     $('#lawn-mowing-form').submit()
 
                             localStorage.setItem('redirectCategory', 'lawn-mowing');
@@ -207,43 +187,17 @@
                             localStorage.setItem('address', "{{ $address }}");
                             localStorage.setItem('lat', "{{ $lat }}");
                             localStorage.setItem('lng', "{{ $lng }}");
-                            //window.location = "{{ route('web.login') }}"
-                            // window.open("{{ route('web.login') }}",'_blank','location=yes,height=800,width=800,scrollbars=yes,status=yes');
-                //         }
-                //     },
-                //     error: function(err){
-                //         errorMessage(err.responseJSON)
-                //     }
-                // })
             })
 
             $('.snow-plowing-service').click(function(){
                 let that = this
-                // $.ajax({
-                //     url: "{{ route('auth-check') }}",
-                //     type: 'get',
-                //     success: function(res){
-                //         if(res.authenticated){
-                //             $('#snow-plowing-form').attr('action',"{{ route('snow-plowing.address.post',['type'=>'_type_']) }}".replace('_type_',$(that).data('type')))
-                //             $('#snow-plowing-form').submit()
-                //         } else {
-
                             $('#snow-plowing-form').attr('action',"{{ route('snow-plowing.address.post',['type'=>'_type_']) }}".replace('_type_',$(that).data('type')))
-                            $('#snow-plowing-form').submit()
-
+                            $('#snow-plowing-form').submit();
                             localStorage.setItem('redirectCategory', 'snow-plowing');
                             localStorage.setItem('redirectType', $(that).data('type'));
                             localStorage.setItem('address', "{{ $address }}");
                             localStorage.setItem('lat', "{{ $lat }}");
                             localStorage.setItem('lng', "{{ $lng }}");
-                            //window.location = "{{ route('web.login') }}"
-                            // window.open("{{ route('web.login') }}", '_blank', 'location=yes,height=800,width=800,scrollbars=yes,status=yes');
-                //         }
-                //     },
-                //     error: function(err){
-                //         errorMessage(err.responseJSON)
-                //     }
-                // })
 
             })
 
