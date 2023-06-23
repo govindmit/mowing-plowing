@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if(config('app.env') === 'production' || config('app.env') === 'staging' || config('app.env') ===  'cooming_soon') {
-            URL::forceScheme('https');
+            // URL::forceScheme('https');
         }
 
         $company = [];

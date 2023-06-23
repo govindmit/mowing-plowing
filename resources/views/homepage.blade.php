@@ -155,6 +155,14 @@
         </nav>
     </header>
 
+    <section class="container-fluid section-10 py-lg-2 my-2">
+        <div class="text-grey p-8">
+        @if ($banner)
+            {!! $banner->description !!}
+        @endif
+        </div>
+    </section>
+
     <!-- ------ section-1 ( bg-img with blur section) ------- -->
     <section class="container-fluid section-1">
         <div class="container-lg blur-section">

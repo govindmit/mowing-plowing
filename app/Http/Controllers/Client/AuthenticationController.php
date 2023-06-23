@@ -32,7 +32,8 @@ class AuthenticationController extends ClientBaseController
     {
         $sekected_city = City::all()->pluck('name');
         $city_list = CityList::whereIn('ID', $sekected_city)->with('state')->get();
-        return view('homepage', compact('city_list'));
+        $banner = BannerScript::first();
+        return view('homepage', compact('city_list','banner'));
     }
 
     public function signup(Request $req)

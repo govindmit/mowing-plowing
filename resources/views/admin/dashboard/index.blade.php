@@ -162,25 +162,37 @@
                         <div class="table-responsive custom-scrollbar">
                             <table class="table table-bordernone">
                                 <tbody>
-                                @if(count($past_due_job)>0)
-                                @foreach($past_due_job as $recent_order)
-                                    <tr>
-                                        <td>
-                                            <div class="media">
-                                                <div class="square-box me-2"><img class="img-fluid b-r-5"
-                                                        src="{{ asset($recent_order->user->image) }}" alt="">
-                                                </div>
-                                                <div class="media-body"><a href="user-profile.html">
-                                                        <h5>{{$recent_order->user->first_name}} added new Order</h5>
-                                                    </a>
-                                                  <p>Order id</p> <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}"><p class="font-primary">{{$recent_order->order_id}}</p></a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span class="badge font-theme-light"><h6>{{date("M jS, Y", strtotime($recent_order->date));}}</h6></span></td>
-                                    </tr>
-                                @endforeach()    
-                                    @endif()
+                                    @if(count($past_due_job) > 0)
+                                        @foreach($past_due_job as $recent_order)
+                                            <tr>
+                                                <td>
+                                                    <div class="media">
+                                                        @if($recent_order->user && $recent_order->user->image)
+                                                            <div class="square-box me-2">
+                                                                <img class="img-fluid b-r-5" src="{{ asset($recent_order->user->image) }}" alt="">
+                                                            </div>
+                                                        @endif
+                                                        <div class="media-body">
+                                                            <a href="user-profile.html">
+                                                                <h5>
+                                                                    {{ $recent_order->user ? $recent_order->user->first_name : 'Unknown User' }} added new Order
+                                                                </h5>
+                                                            </a>
+                                                            <p>Order id</p>
+                                                            <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}">
+                                                                <p class="font-primary">{{ $recent_order->order_id }}</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge font-theme-light">
+                                                        <h6>{{ date("M jS, Y", strtotime($recent_order->date)) }}</h6>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
