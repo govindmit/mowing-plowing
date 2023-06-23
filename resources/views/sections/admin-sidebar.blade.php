@@ -555,20 +555,7 @@ a<div class="sidebar-wrapper">
 
                                     </ul>
                                 </li>
-                                <li><a href="{{ route('admin.about-us.index') }}">Banner script code</a>
-                                <li><a class="submenu-title" href="#">Banner<span class="sub-arrow"><i
-                                                class="fa fa-angle-right"></i></span></a>
-                                    <ul class="nav-sub-childmenu submenu-content">
-
-                                        <li><a
-                                                href="{{ route('admin.faqs.get_faq', ['type' => 'customer']) }}">Customer</a>
-                                        </li>
-                                        <li><a
-                                                href="{{ route('admin.faqs.get_faq', ['type' => 'provider']) }}">Provider</a>
-                                        </li>
-
-                                    </ul>
-                                </li>
+                                <li><a href="{{ route('admin.banner-script') }}">Banner</a>
                                 <li><a href="{{ route('admin.footer-script') }}">Footer script code</a>
                                 {{-- <li><a href="{{ route('admin.term-and-condition.index') }}">Terms & conditions</a> --}}
                                 <li><a class="submenu-title" href="#">Terms & conditions<span class="sub-arrow"><i
