@@ -179,28 +179,25 @@
 
     <script>
         $(function() {
-            $('#lawn-mowing').click(function(){       
-                    $('#lawn-mowing-form').submit()
-
-                            localStorage.setItem('redirectCategory', 'lawn-mowing');
-                            localStorage.setItem('redirectType', '');
-                            localStorage.setItem('address', "{{ $address }}");
-                            localStorage.setItem('lat', "{{ $lat }}");
-                            localStorage.setItem('lng', "{{ $lng }}");
+            $('#lawn-mowing').click(function(){
+            	$('#lawn-mowing-form').submit()
+                localStorage.setItem('redirectCategory', 'lawn-mowing');
+                localStorage.setItem('redirectType', '');
+                localStorage.setItem('address', "{{ $address }}");
+                localStorage.setItem('lat', "{{ $lat }}");
+                localStorage.setItem('lng', "{{ $lng }}");
             })
 
             $('.snow-plowing-service').click(function(){
                 let that = this
-                            $('#snow-plowing-form').attr('action',"{{ route('snow-plowing.address.post',['type'=>'_type_']) }}".replace('_type_',$(that).data('type')))
-                            $('#snow-plowing-form').submit();
-                            localStorage.setItem('redirectCategory', 'snow-plowing');
-                            localStorage.setItem('redirectType', $(that).data('type'));
-                            localStorage.setItem('address', "{{ $address }}");
-                            localStorage.setItem('lat', "{{ $lat }}");
-                            localStorage.setItem('lng', "{{ $lng }}");
-
+                $('#snow-plowing-form').attr('action',"{{ route('snow-plowing.address.post',['type'=>'_type_']) }}".replace('_type_',$(that).data('type')))
+                $('#snow-plowing-form').submit()
+                localStorage.setItem('redirectCategory', 'snow-plowing');
+                localStorage.setItem('redirectType', $(that).data('type'));
+                localStorage.setItem('address', "{{ $address }}");
+                localStorage.setItem('lat', "{{ $lat }}");
+                localStorage.setItem('lng', "{{ $lng }}");
             })
-
         });
    </script>
 

@@ -263,7 +263,6 @@ Route::group(['middleware'=>['auth:web','authenticate:web']], function () {
         Route::get('/',[NotificationController::class,'index'])->name('index');
         Route::get('/update-status',[NotificationController::class,'updateStatus'])->name('update-status');
     });
-
 });
 
 // For theme designs => Must be at the end of the file

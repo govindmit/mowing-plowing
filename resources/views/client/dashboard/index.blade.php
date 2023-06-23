@@ -605,23 +605,23 @@
         //     }
         // };
 
-        let redirectCategory = localStorage.getItem('redirectCategory')
-        let redirectType = localStorage.getItem('redirectType')
-        let address = localStorage.getItem('address')
-        let lat = localStorage.getItem('lat')
-        let lng = localStorage.getItem('lng')
+        // let redirectCategory = localStorage.getItem('redirectCategory')
+        // let redirectType = localStorage.getItem('redirectType')
+        // let address = localStorage.getItem('address')
+        // let lat = localStorage.getItem('lat')
+        // let lng = localStorage.getItem('lng')
 
-        // Close window if there is any redirect category
-        if(redirectCategory){
-            document.body.innerHTML = "Redirecting.....";
-            localStorage.removeItem('redirectCategory');
-            localStorage.removeItem('redirectType');
-            localStorage.removeItem('address');
-            localStorage.removeItem('lat');
-            localStorage.removeItem('lng');
-            autoRedirect()
-            // closeWindow(redirectCategory,redirectType)
-        }
+        // // Close window if there is any redirect category
+        // if(redirectCategory){
+        //     document.body.innerHTML = "Redirecting.....";
+        //     localStorage.removeItem('redirectCategory');
+        //     localStorage.removeItem('redirectType');
+        //     localStorage.removeItem('address');
+        //     localStorage.removeItem('lat');
+        //     localStorage.removeItem('lng');
+        //     autoRedirect()
+        //     // closeWindow(redirectCategory,redirectType)
+        // }
 
         function autoRedirect() {
             var form = document.createElement("form");
