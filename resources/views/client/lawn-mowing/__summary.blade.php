@@ -200,7 +200,7 @@
                 <button type="button" class="btn btn-success px-5" id="pay">Pay</button>
             </div>
             @else
-            @include('client.lawn-mowing.login')
+            @include('client.lawn-mowing.login-and-registration')
             @endif
             </div>
         </div>

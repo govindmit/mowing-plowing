@@ -50,7 +50,7 @@ class LawnMowingController extends ClientBaseController
         $data['user_id'] = auth()->user() ? auth()->user()->id : null;
         $data['user_ip'] = $req->ip();
 
-        $property = Property::whereCategoryId($data['category_id'])->whereUserIp($req->ip())->whereLat($data['lat'])->whereLng($data['lng'])->first();
+        $property = Property::whereCategoryId($data['category_id'])->whereUserIp($data['user_ip'])->whereLat($data['lat'])->whereLng($data['lng'])->first();
 
         if(!$property) {
             $property = Property::create($data);

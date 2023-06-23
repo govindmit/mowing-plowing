@@ -207,9 +207,7 @@ class AuthenticationController extends ClientBaseController
             $user->lng = $req->lng;
             $user->referral_link = "/referral-link/". Str::random(16);
             $user->status = 1;
-            
-       
-            
+                  
             if ($req->hasFile('image')) {
                 $foldername = '/uploads/clients/profile-pics/';
                 $filename = time() . '-' . rand(0000000, 9999999) . '.' . $req->file('image')->extension();

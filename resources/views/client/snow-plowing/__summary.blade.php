@@ -152,14 +152,14 @@
                     @php
                     $wallet = App\Models\Wallet::whereUserId(auth()->id())->first();
                     $defaultCard = App\Models\Card::whereUserId(auth()->id())->whereIsDefault("1")->first();
-                    @endphp
-                    <div class="list-group-item my-4 d-flex justify-content-between align-items-center boxShadow py-3 px-4 rounded border-0">
-                        M&P wallet balance:
-                        <span class="">
-                            <span>${{ $wallet->amount }}</span>
-                        </span>
-                    </div>
-                    @if ($defaultCard)
+                @endphp
+                <div class="list-group-item my-4 d-flex justify-content-between align-items-center boxShadow py-3 px-4 rounded border-0">
+                    M&P wallet balance:
+                    <span class="">
+                        <span>${{ $wallet->amount }}</span>
+                    </span>
+                </div>
+                @if ($defaultCard)
                     <div class="list-group-item my-4 d-flex justify-content-between align-items-center boxShadow py-3 px-4 rounded border-0">
                         Default Card number:
                         <span class="">
@@ -180,7 +180,7 @@
                     <button type="button" class="btn btn-success px-5" id="pay">Pay</button>
                 </div>
             @else
-                @include('client.snow-plowing.login')
+                @include('client.snow-plowing.login-and-registration')
             @endif
         </div>
     </div>

@@ -1,7 +1,7 @@
 <div id="login">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" id="login-form">
         @csrf
-        <h4>If you already have account. Please login to pay.</h4>
+        <h6>If you already have account. Please login to pay.</h6>
         <div class="form-group mt-5">
             <label>Email Address<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text"> <i class="fa-solid fa-envelope fs-5"></i></span>
@@ -22,7 +22,6 @@
                 <input id="remember_me" class="form-check-input" type="checkbox" name="remember_me">
                 <label class="form-check-label" for="remember_me">Remember me</label>
             </div>
-            <a class="link" href="{{ route('forget-password.email') }}">Forget password?</a>
         </div>
         <div class="form-group mt-4 pt-2">
             <input name="property_id" id="property_id" type="hidden" value="{{ $order->property_id }}">
@@ -34,6 +33,7 @@
         <p>Don't have an account?<a id="signup" class="ms-2" href="#">Sign Up</a></p>
     </form>
 </div>
+
 
 <div id="registration-form">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" enctype="multipart/form-data" id="registration">
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="form-group">
-        <label>Phone Number<span class="text-danger">*</span></label>
+            <label>Phone Number<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text">+1</span>
                 <input class="form-control" type="text" name="phone_number" maxlength="10" required="" placeholder="Phone Number" value="{{old('phone_number')}}">
             </div>
@@ -82,8 +82,8 @@
         <div class="form-group">
             <label>Address<span class="text-danger">*</span></label>
             <div class="input-group"><span class="input-group-text">
-                <i class="fa-regular fa-pen-to-square"></i>
-            </span>
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </span>
                 <input id="reglocation" class="form-control" type="text" name="address" required="" placeholder="Enter address">
                 <input type="hidden" name="lat" id="reglat">
                 <input type="hidden" name="lng" id="reglng">
@@ -110,7 +110,7 @@
             <input name="summaryRegister" id="summaryRegister" type="hidden" value="1">
             <button class="btn btn-primary btn-block w-100 fw-light" id="sign-up" type="submit">Create Account</button>
         </div>
-        <p>Already have an account?<a class="ms-2" id="log-in">Log in</a></p>
+        <p>Already have an account?<a class="ms-2" id="log-in" href="#">Log in</a></p>
     </form>
 </div>
 
@@ -187,10 +187,11 @@
             });
         });
 
+
+
         $('#registration').submit(function(event) {
             event.preventDefault();
             var data = $(this).serialize();
-
 
             $.ajax({
                 headers: {
