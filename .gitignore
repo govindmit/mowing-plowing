@@ -17,9 +17,7 @@ public_html/hot
 
 storage/*.key
 .env
-index.php
 Homestead.yaml
-.htaccess
 Homestead.json
 /.vagrant
 .phpunit.result.cache
