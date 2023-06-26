@@ -439,6 +439,56 @@ input[type=text]:focus::placeholder {
     width: 24%;
   }
 
+  .banner-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.container-fluid {
+    padding: 0;
+  }
+  
+  .section-12 {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .homePageBanner {
+    position: relative;
+    width: 100%;
+    max-width: 1660px;
+    margin: 0 auto;
+  }
+  
+  .homePageBanner img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Media Queries */
+  @media screen and (max-width: 768px) {
+    .homePageBanner {
+      max-width: 100%;
+    }
+  }
+
+  @media screen and (min-width: 1600px) {
+    .homePageBanner {
+      max-width: 100%;
+    }
+  }
+  
+
 /* ----- (section-10) online chat popup-css ------ */
 .circle-1 {
     width: 18px;
