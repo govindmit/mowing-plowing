@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Models\BannerScript;
 use App\Http\Controllers\Client\LawnMowingController;
 use App\Http\Requests\Signup;
 use App\Mail\EmailVerification;
@@ -28,11 +29,16 @@ class AuthenticationController extends ClientBaseController
         return view('client.auth.signup', $this->data);
     }
 
+    public function banner(){
+        $banner = BannerScript::first();
+        return $banner;
+    }
+
     public function homePage()
     {
         $sekected_city = City::all()->pluck('name');
         $city_list = CityList::whereIn('ID', $sekected_city)->with('state')->get();
-        $banner = BannerScript::first();
+        $banner = $this->banner();
         return view('homepage', compact('city_list','banner'));
     }
 

@@ -162,7 +162,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:admi
     //Banner Script
     Route::get('banner-script', [BannerScriptController::class, 'index'])->name('banner-script');
     Route::post('store-banner-script', [BannerScriptController::class, 'storeBannerScrpt'])->name('store-banner-script');
-    Route::get('/banner', [BannerScriptController::class, 'data'])->name('banner');
+    Route::get('/removeBanner/{id}', [BannerScriptController::class, 'removeBanner'])->name('removeBanner');
 
     //Citoies Routes
     Route::group(['prefix' => 'cities', 'as' => 'cities.'], function () {

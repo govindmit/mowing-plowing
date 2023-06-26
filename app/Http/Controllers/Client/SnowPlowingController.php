@@ -72,8 +72,8 @@ class SnowPlowingController extends ClientBaseController
             $this->carTypes = SubCategory::get();
             $this->colors = Color::get();
         }
-
-        return view('client.snow-plowing.'.$view.'-steps',$this->data);
+        $banner = app(AuthenticationController::class)->banner();
+        return view('client.snow-plowing.'.$view.'-steps',array_merge($this->data, compact('banner')));
     }
 
     public function orderSummary(Request $request)

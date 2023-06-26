@@ -155,10 +155,10 @@
         </nav>
     </header>
 
-    <section class="container-fluid section-10 py-lg-2 my-2">
-        <div class="text-grey p-8">
+    <section class="container-fluid section-12 py-lg-4 my-2">
+        <div class="homePageBanner">
         @if ($banner)
-            {!! $banner->description !!}
+            <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}" >
         @endif
         </div>
     </section>

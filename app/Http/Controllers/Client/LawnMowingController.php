@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Client\AuthenticationController;
 
 class LawnMowingController extends ClientBaseController
 {
@@ -61,9 +62,10 @@ class LawnMowingController extends ClientBaseController
 
     public function steps($property_id)
     {
+        $banner = app(AuthenticationController::class)->banner();
         $this->property = Property::find($property_id);
         if(!$this->property) return redirect(route('lawn-mowing.start'));
-        return view('client.lawn-mowing.steps',$this->data);
+        return view('client.lawn-mowing.steps', array_merge($this->data, compact('banner')));
     }
 
     public function getCleanUps(Request $req)

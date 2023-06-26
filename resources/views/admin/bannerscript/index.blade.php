@@ -2,10 +2,6 @@
 
 @section('title', 'Admins')
 
-@push('vendor-styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatables.css') }}">
-@endpush
-
 @push('page-styles')
 @endpush
 
@@ -15,21 +11,35 @@
         height: 600px !important;
     }
 </style>
-<script src="https://cdn.ckeditor.com/4.20.1/full/ckeditor.js"></script>
 <div class="row">
     <div class="col-md-12 mt-5">
-        <div class="card" style="height: 1000px;">
+        <div class="card">
             <div class="card-body">
                 <form method="post" action="{{ route('admin.store-banner-script')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label><strong>Banner Code:</strong></label>
-                        <input type="hidden" name="id" value="{{isset( $descriprtion->id) ?  $descriprtion->id : '  '}}">
-                        <textarea name="editor1">
-                        {{ isset( $descriprtion->description) ?  $descriprtion->description : '  ' }} 
-                        </textarea>
+                        <label for="bannerCode"><strong>Banner Code:</strong></label>
+                        <input type="hidden" name="id" value="{{ isset($descriprtion->id) ? $descriprtion->id : '' }}">
+                        <div class="mb-3">
+                            @if(isset($descriprtion->description))
+                                <img src="{{ asset($descriprtion->description) }}" alt="Image" style="max-width: 300px; max-height: 300px;">
+                                <a href="{{ route('admin.removeBanner', $descriprtion->id) }}"><button type="button" class="btn btn-danger">Delete</button></a>
+                            @else
+                                <div></div>
+                            @endif
+                        </div>
+                        <!-- <div class="text-center">
+                        </div> -->
+                        <div class="mb-3">
+                            <label for="imageInput" class="form-label">Upload Image:</label>
+                            <input type="file" name="image" id="imageInput" onchange="previewImage(event)" class="form-control" accept="image/jpeg, image/png, image/jpg, image/gif">
+                        </div>
+                        <div class="mb-3">
+                            <img src="" id="imagePreview" alt="Image Preview" style="display: none; max-width: 300px; max-height: 300px;">
+                        </div>
+                        <!-- Add other form fields as needed -->
                     </div>
-                    <div class="form-group text-center" style="margin-left: 93%; margin-top: 2%;">
+                    <div class="text-center">
                         <button type="submit" class="btn btn-success btn-lg">Save</button>
                     </div>
                 </form>
@@ -37,15 +47,23 @@
         </div>
     </div>
 </div>
-<script>
-    CKEDITOR.replace('editor1');
+<script> 
+    function previewImage(event) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById("imagePreview");
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>
+
 @endsection
 
-@push('vendor-scripts')
-    <script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-@endpush
-
 @push('page-scripts')
-  
+
 @endpush
