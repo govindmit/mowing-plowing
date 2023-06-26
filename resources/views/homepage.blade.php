@@ -155,6 +155,14 @@
         </nav>
     </header>
 
+    <section class="container-fluid section-12 py-lg-4 my-2">
+        <div class="homePageBanner">
+        @if ($banner)
+            <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}" >
+        @endif
+        </div>
+    </section>
+
     <!-- ------ section-1 ( bg-img with blur section) ------- -->
     <section class="container-fluid section-1">
         <div class="container-lg blur-section">

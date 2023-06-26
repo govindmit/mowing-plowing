@@ -322,8 +322,6 @@
 
     }
 
-
-
     input[type="radio"]:checked + .bgGray {
         background-color: #7CC0FB;
     }
@@ -332,12 +330,63 @@
         margin-top: 35px !important;
     }
 
+    .BannerImage {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .BannerImage img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    @media (min-width: 576px) {
+        /* Adjust styles for small screens */
+        .BannerImage {
+            max-width: 576px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        /* Adjust styles for medium screens */
+        .BannerImage {
+            max-width: 768px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        /* Adjust styles for large screens */
+        .BannerImage {
+            max-width: 992px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        /* Adjust styles for extra-large screens */
+        .BannerImage {
+            max-width: 1200px;
+        }
+    }
+
+    @media screen and (min-width: 1600px) {
+    .BannerImage {
+      max-width: 100%;
+    }
+  }
 </style>
 @endpush
 
 @section('body')
     <br>
     <div class="row">
+        <div class="BannerImage">
+        @if ($banner)
+            <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}">
+        @endif
+        </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <h2 class="my-4">Lawn Mowing</h2>
         </div>

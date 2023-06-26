@@ -555,6 +555,7 @@ a<div class="sidebar-wrapper">
 
                                     </ul>
                                 </li>
+                                <li><a href="{{ route('admin.banner-script') }}">Banner</a>
                                 <li><a href="{{ route('admin.footer-script') }}">Footer script code</a>
                                 {{-- <li><a href="{{ route('admin.term-and-condition.index') }}">Terms & conditions</a> --}}
                                 <li><a class="submenu-title" href="#">Terms & conditions<span class="sub-arrow"><i

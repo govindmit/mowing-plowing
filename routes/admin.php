@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\PrivacyPloicyController;
 use App\Http\Controllers\Admin\TermAndConditionController;
 use App\Http\Controllers\Admin\CancelJobsController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\Admin\BannerScriptController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -157,6 +158,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:admi
     //Footer Script
     Route::get('footer-script', [FooterScriptController::class, 'index'])->name('footer-script');
     Route::post('store-footer-script', [FooterScriptController::class, 'storeFooterScrpt'])->name('store-footer-script');
+
+    //Banner Script
+    Route::get('banner-script', [BannerScriptController::class, 'index'])->name('banner-script');
+    Route::post('store-banner-script', [BannerScriptController::class, 'storeBannerScrpt'])->name('store-banner-script');
+    Route::get('/removeBanner/{id}', [BannerScriptController::class, 'removeBanner'])->name('removeBanner');
 
     //Citoies Routes
     Route::group(['prefix' => 'cities', 'as' => 'cities.'], function () {
