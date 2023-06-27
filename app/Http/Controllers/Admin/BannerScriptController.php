@@ -19,6 +19,8 @@ class BannerScriptController extends AdminBaseController
     if ($banner) {
         $banner->delete();
         return redirect()->back()->with('success', 'Banner has been removed');
+    } else {
+        return redirect()->back()->with('error', 'Banner not found');
     }
   }
 

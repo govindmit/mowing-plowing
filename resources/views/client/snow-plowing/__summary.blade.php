@@ -94,7 +94,7 @@
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 d-flex flex-column justify-content-between">
             <div>
-                <div class="px-4">
+                <div class="px-1">
                     <p>Tip your service provider</p>
                     <select class="form-select boxShadow shadow-none selectBox bgGray" id="tip">
                         @php

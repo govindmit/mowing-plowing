@@ -7,18 +7,22 @@
 
 @section('body')
  <style>
+    .bannerscript{
+        margin:0 !important;
+    }
     .cke_contents{
         height: 600px !important;
     }
 </style>
-<div class="row">
+<div class="row bannerscript">
     <div class="col-md-12 mt-5">
         <div class="card">
             <div class="card-body">
                 <form method="post" action="{{ route('admin.store-banner-script')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="bannerCode"><strong>Banner Code:</strong></label>
+                        <label for="bannerCode"><strong>Banner:</strong></label>
+                        <p>*Disclaimer the image size should be 1920 x 320 pixels</p>
                         <input type="hidden" name="id" value="{{ isset($descriprtion->id) ? $descriprtion->id : '' }}">
                         <div class="mb-3">
                             @if(isset($descriprtion->description))

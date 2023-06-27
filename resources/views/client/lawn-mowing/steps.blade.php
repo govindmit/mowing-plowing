@@ -329,6 +329,9 @@
     .m-t-35 {
         margin-top: 35px !important;
     }
+    .lawn_steps{
+        margin:0 !important;
+    }
 
     .BannerImage {
         position: relative;
@@ -346,28 +349,28 @@
     @media (min-width: 576px) {
         /* Adjust styles for small screens */
         .BannerImage {
-            max-width: 576px;
+            max-width: 100%;
         }
     }
 
     @media (min-width: 768px) {
         /* Adjust styles for medium screens */
         .BannerImage {
-            max-width: 768px;
+            max-width: 100%;
         }
     }
 
     @media (min-width: 992px) {
         /* Adjust styles for large screens */
         .BannerImage {
-            max-width: 992px;
+            max-width: 100%;
         }
     }
 
     @media (min-width: 1200px) {
         /* Adjust styles for extra-large screens */
         .BannerImage {
-            max-width: 1200px;
+            max-width: 100%;
         }
     }
 
@@ -381,12 +384,12 @@
 
 @section('body')
     <br>
-    <div class="row">
-        <div class="BannerImage">
-        @if ($banner)
-            <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}">
-        @endif
-        </div>
+    <div class="BannerImage">
+    @if ($banner)
+        <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}">
+    @endif
+    </div>
+    <div class="row lawn_steps">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <h2 class="my-4">Lawn Mowing</h2>
         </div>

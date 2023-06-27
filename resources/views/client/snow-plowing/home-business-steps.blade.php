@@ -337,6 +337,13 @@
             text-align: center
         }
         
+        .row.Home-Snow-Plowing {
+                margin: 0 !important;
+        }
+        .custom_row_auto{
+            margin:auto;
+        }
+
         .BannerImage {
             position: relative;
             width: 100%;
@@ -353,28 +360,29 @@
         @media (min-width: 576px) {
             /* Adjust styles for small screens */
             .BannerImage {
-                max-width: 576px;
+                max-width:100%;
             }
         }
 
         @media (min-width: 768px) {
             /* Adjust styles for medium screens */
             .BannerImage {
-                max-width: 768px;
+                max-width: 100%;
             }
+            
         }
 
         @media (min-width: 992px) {
             /* Adjust styles for large screens */
             .BannerImage {
-                max-width: 992px;
+                max-width: 100%;
             }
         }
 
         @media (min-width: 1200px) {
             /* Adjust styles for extra-large screens */
             .BannerImage {
-                max-width: 1200px;
+                max-width: 100%;
             }
         }
 
@@ -393,7 +401,7 @@
         <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}">
     @endif
     </div>
-    <div class="row">
+    <div class="row Home-Snow-Plowing">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <h2 class="my-4">{{$type}} Snow Plowing  </h2>
         </div>
@@ -497,7 +505,7 @@
                                 </select>
                             </div>
 
-                            <div class="row mt-2">
+                            <div class="row mt-2 custom_row_auto">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                     <div class="sidewalk ">
                                         <div class="sidewalk-bg-img">
