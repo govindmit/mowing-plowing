@@ -293,6 +293,10 @@
             flex-grow: 1;
         }
 
+        .row.car-Snow-Plowing {
+                margin: 0 !important;
+        }
+
         .BannerImage {
             position: relative;
             width: 100%;
@@ -309,28 +313,28 @@
         @media (min-width: 576px) {
             /* Adjust styles for small screens */
             .BannerImage {
-                max-width: 576px;
+                max-width: 100%;
             }
         }
 
         @media (min-width: 768px) {
             /* Adjust styles for medium screens */
             .BannerImage {
-                max-width: 768px;
+                max-width: 100%;
             }
         }
 
         @media (min-width: 992px) {
             /* Adjust styles for large screens */
             .BannerImage {
-                max-width: 992px;
+                max-width: 100%;
             }
         }
 
         @media (min-width: 1200px) {
             /* Adjust styles for extra-large screens */
             .BannerImage {
-                max-width: 1200px;
+                max-width: 100%;
             }
         }
 
@@ -349,7 +353,7 @@
         <img src="{{ asset($banner->description) }}" alt="{{ $banner->description }}" width="1360" height="200">
     @endif
     </div>
-    <div class="row">
+    <div class="row car-Snow-Plowing">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <h2 class="my-4">Car Snow Removal</h2>
         </div>

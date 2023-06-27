@@ -1,3 +1,14 @@
+<style>
+    #login-form.login-form{
+        width:auto;
+        padding:30px 5px;
+    }
+    #registration.login-form{
+        width:auto;
+        padding:30px 5px;
+    }
+</style>
+
 <div id="login">
     <form class="theme-form login-form needs-validation" novalidate="" action="" method="POST" id="login-form">
         @csrf

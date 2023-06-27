@@ -31,6 +31,7 @@ ul.navbar-nav {
     height: 870px;
     position: relative;
 }
+
 .blur-section {
     /* background-color: linear-gradient(rgb(0 0 0 / 30%), rgb(0 0 0 / 30%)); */
     background: #ffffffb3 !important;
@@ -160,6 +161,11 @@ input[type=text]:focus::placeholder {
     text-align: center;
 
 }
+
+.steps-banner {
+    position: relative;
+}
+
 .step-heading2 {
     position: absolute;
     bottom: 25px;
@@ -186,7 +192,7 @@ input[type=text]:focus::placeholder {
     transform: rotate(-45deg);
     background-color: #fff;
     left: 512px;
-    top: 1005px;
+    top: 49px;
     bottom: -605px;
     z-index: 10;
 }
@@ -200,7 +206,7 @@ input[type=text]:focus::placeholder {
     transform: rotate(-45deg);
     background-color: #fff;
     right: 612px;
-    top: 1005px;
+    top: 49px;
     z-index: 10;
 }
 
@@ -439,7 +445,7 @@ input[type=text]:focus::placeholder {
     width: 24%;
   }
 
-  .banner-wrapper {
+.banner-wrapper {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
