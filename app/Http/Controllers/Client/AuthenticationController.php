@@ -63,7 +63,6 @@ class AuthenticationController extends ClientBaseController
                 'phone_number' => $req->phone_number,
                 'type' => 'customer',
             ]);
-
             $user->save();
 
             return redirect(route('registration'))->with(['email' => $req->email,'phone_number' => $req->phone_number]);
@@ -148,7 +147,6 @@ class AuthenticationController extends ClientBaseController
                 'email' => 'required',
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'phone_number' => 'required|unique:users',
                 'password' => 'required|confirmed',
                 'image' => 'mimes:jpg,jpeg,png',
                 'address' => 'required',
