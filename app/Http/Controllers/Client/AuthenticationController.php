@@ -27,6 +27,7 @@ class AuthenticationController extends ClientBaseController
     public function signupIndex(Request $req)
     {
         return view('client.auth.signup', $this->data);
+        // return view('client.auth.registration');
     }
 
     public function banner(){
@@ -47,8 +48,8 @@ class AuthenticationController extends ClientBaseController
         try {
 
             $validator = Validator::make($req->all(), [
-                'email' => 'required|email',
-                'phone_number' => 'required|max:10'
+                'email' => 'required|email|unique:users,email',
+                'phone_number' => 'required|unique:users|max:10',
             ]);
 
             if ($validator->fails()) {
@@ -57,34 +58,15 @@ class AuthenticationController extends ClientBaseController
 
             $req['phone_number'] = "+1" . $req->phone_number;
 
-            $userWithPhoneNumber = User::where('phone_number', $req->phone_number)->first();
-
-            if ($userWithPhoneNumber && $userWithPhoneNumber->phone_number_verified_at && $userWithPhoneNumber->password) {
-                return back()->with('error', 'Phone number has been taken');
-            } elseif ($userWithPhoneNumber && $userWithPhoneNumber->status == 2) {
-                $userWithPhoneNumber->delete();
-            }
-
-            $userWithEmail = User::where('email', $req->email)->first();
-
-            if ($userWithEmail && $userWithEmail->email_verified_at && $userWithEmail->password) {
-                return back()->with('error', 'Email has been taken');
-            } elseif ($userWithEmail && $userWithEmail->status == 2) {
-                $userWithEmail->delete();
-            }
-
             $user = User::create([
                 'email' => $req->email,
                 'phone_number' => $req->phone_number,
                 'type' => 'customer',
             ]);
-            $otp = rand(111111, 999999);
-            $user->otp = $otp;
+
             $user->save();
 
-            Mail::to($req->email)->send(new EmailVerification('Sir/Madam', $otp));
-
-            return redirect(route('verify-email'))->with('email', $req->email);
+            return redirect(route('registration'))->with(['email' => $req->email,'phone_number' => $req->phone_number]);
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', "Something unexpected happened on server. " . $th->getMessage());
         }
@@ -162,8 +144,8 @@ class AuthenticationController extends ClientBaseController
         $order_id =$req->order_id;
         $summaryRegister = $req->input('summaryRegister');
         try {
-            $validator = Validator::make($req->all(), [
-                'email' => 'required|email|unique:users,email',
+            $validatorRules = [
+                'email' => 'required',
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'phone_number' => 'required|unique:users',
@@ -172,7 +154,15 @@ class AuthenticationController extends ClientBaseController
                 'address' => 'required',
                 'lat' => 'required',
                 'lng' => 'required',
-            ]);
+            ];
+            
+            if (!empty($summaryRegister)) {
+                $validatorRules['email'] .= '|email|unique:users,email';
+                $validatorRules['phone_number'] = 'required|unique:users';
+            }
+            
+            $validator = Validator::make($req->all(), $validatorRules);
+
 
             if ($validator->fails()) {
                 if (!empty($summaryRegister)) {
@@ -181,11 +171,7 @@ class AuthenticationController extends ClientBaseController
                         'message' => $validator->errors(),
                     ]);
                 } else {
-                    return response()->json([
-                        'success' => false,
-                        'message' => $validator->errors(),
-                        'email' => $req->input('email'),
-                    ]);
+                    return back()->withInput()->with(['email' => $req->email,'errors' => $validator->errors()]);
                 }
             }
             

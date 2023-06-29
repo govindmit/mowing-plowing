@@ -30,6 +30,7 @@
             <div class="input-group"><span class="input-group-text"><i class="fa-solid fa-envelope fs-5"></i></span>
                 <input class="form-control" type="email" name="email" required="" placeholder="abc@gmail.com"
                     value="{{old('email')}}">
+                <div class="invalid-feedback email">Email is required</div>
             </div>
         </div>
         <div class="form-group">
@@ -37,6 +38,7 @@
             <div class="input-group"><span class="input-group-text">+1</span>
                 <input class="form-control" type="text" name="phone_number" maxlength="10" required="" placeholder="Phone Number"
                     value="{{old('phone_number')}}">
+                    <div class="invalid-feedback email">Phone Number is required</div>
             </div>
         </div>
 
