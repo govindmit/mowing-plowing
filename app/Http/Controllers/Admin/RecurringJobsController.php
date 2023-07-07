@@ -26,7 +26,7 @@ class RecurringJobsController extends AdminBaseController
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('username', function ($data) {
-                    return $data->user->first_name;
+                    return isset($data->user->first_name) ? $data->user->first_name : 'Not Assigned';
                 })
                 ->addColumn('recurringplan', function ($data) {
                     return 'Every' . ' ' . $data->on_every . ' ' . 'Days';
