@@ -61,15 +61,15 @@
 
                              <div class="row g-3">
                                  <div class="col-md-6">
-                                     <label class="form-label" for="validationCustom01">First name</label>
+                                     <label class="form-label" for="validationCustom01">First name<span class="text-danger">*</span></label>
                                      <input class="form-control"  minlength="3" maxlength="40" name="first_name" value="{{ old('first_name') }}"
-                                         id="validationCustom01" type="text" required="">
+                                     placeholder="First Name" id="validationCustom01" type="text" required="">
                                      <div class="invalid-feedback">Please Enter First name</div>
                                  </div>
                                  <div class="col-md-6">
-                                     <label class="form-label" for="validationCustom02">Last name</label>
+                                     <label class="form-label" for="validationCustom02">Last name<span class="text-danger">*</span></label>
                                      <input class="form-control" maxlength="40" name="last_name" value="{{ old('last_name') }}" name="last_name"
-                                         id="validationCustom02" type="text" required="">
+                                     placeholder="Last Name" id="validationCustom02" type="text" required="">
                                      <div class="invalid-feedback">Please Enter Last name</div>
                                  </div>
 
@@ -77,17 +77,17 @@
                              <br>
                              <div class="row g-3">
                                  <div class="col-md-6">
-                                     <label class="form-label" for="validationCustom02">Password</label>
+                                     <label class="form-label" for="validationCustom02">Password<span class="text-danger">*</span></label>
                                      <input class="form-control" value="{{ old('password') }}" name="password"
-                                         id="validationCustom02" type="password" required="">
+                                     placeholder="Password" id="validationCustom02" type="password" required="">
                                      <div class="invalid-feedback">Please Enter Password</div>
                                  </div>
                                  <div class="col-md-6 mb-3">
-                                     <label class="form-label" for="validationCustomUsername">Re Enter Password</label>
+                                     <label class="form-label" for="validationCustomUsername">Re Enter Password<span class="text-danger">*</span></label>
                                      <div class="input-group">
                                          <input class="form-control" value="{{ old('password_confirmation') }}"
                                              name="password_confirmation" id="validationCustomUsername" type="password"
-                                             placeholder="password_confirmation" aria-describedby="inputGroupPrepend"
+                                             placeholder="Confirm Password" aria-describedby="inputGroupPrepend"
                                              required="">
                                          <div class="invalid-feedback">Re Enter Password Required</div>
                                      </div>
@@ -105,19 +105,20 @@
                                          type="text">
                                  </div>
                                  <div class="col-md-4 mb-3">
-                                     <label class="form-label" for="validationCustom03">Address</label>
+                                     <label class="form-label" for="validationCustom03">Address<span class="text-danger">*</span></label>
                                      <div class="input-group">
-                                         <input id="location" value="{{ old('address') }}" class="form-control"
-                                             type="text" name="address" required="" placeholder="Type Address...">
+                                         <input id="location" 
+                                             class="form-control" type="text" name="address" required=""
+                                             placeholder="Enter your address">
+                                         <div class="invalid-feedback company_address">Please Choose Your Address From DropDown</div>
                                          <input type="hidden" name="lat" id="lat">
                                          <input type="hidden" name="lng" id="lng">
-                                         <div class="invalid-feedback choose_address">Please Choose Address From DropDown</div>
                                      </div>
                                  </div>
                              </div>
                              <div class="row g-3">
                                  <div class="col-md-4">
-                                     <label class="form-label" for="validationCustom01">Company Name</label>
+                                     <label class="form-label" for="validationCustom01">Company Name<span class="text-danger">*</span></label>
                                      <input class="form-control" required="" value="{{ old('company_name') }}"
                                          name="company_name" id="validationCustom01" type="text">
                                      <div class="invalid-feedback">Please provide Company Name</div>
@@ -158,9 +159,9 @@
                                      </div>
                                  </div>
                                  <div class="col-md-6 mb-3">
-                                     <label class="form-label" for="validationCustom03">Company Address</label>
+                                     <label class="form-label" for="validationCustom03">Company Address<span class="text-danger">*</span></label>
                                      <div class="input-group">
-                                         <input id="company_location" value="{{ old('company_address') }}"
+                                         <input id="company_location"
                                              class="form-control" type="text" name="company_address" required=""
                                              placeholder="Enter Company address">
                                          <div class="invalid-feedback company_address">Please Choose Company Address From DropDown</div>
@@ -177,7 +178,7 @@
                                      <div class="input-group">
                                          <input class="form-control" value="{{ old('company_website') }}" required=""
                                              name="protfolio_images[]" id="validationCustom03" type="file" multiple="multiple" accept=".jpg, .jpeg, .png" >
-
+                                             <div class="invalid-feedback company_address">Please Choose At Least One Image</div>
                                      </div>
                                  </div>
 
@@ -187,7 +188,7 @@
                                          <input class="form-control" value="{{ old('company_website') }}"
                                              name="license_images[]" required="" id="validationCustom03" type="file"
                                          accept=".jpg, .jpeg, .png"    multiple="multiple">
-
+                                         <div class="invalid-feedback company_address">Please Choose At Least One Image</div>
                                      </div>
                                  </div>
 
@@ -198,7 +199,7 @@
                                          <input class="form-control" value="{{ old('company_website') }}"
                                           required=""   name="insurance_images[]" id="validationCustom03" type="file"
                                            accept=".jpg, .jpeg, .png"  multiple="multiple">
-
+                                           <div class="invalid-feedback company_address">Please Choose At Least One Image</div>
                                      </div>
                                  </div>
 

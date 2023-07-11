@@ -22,10 +22,12 @@
                 <div class="input-group"><span class="input-group-text"><i class="fa-solid fa-user-pen"></i></span>
                     <input class="form-control" type="text" name="first_name" required="" placeholder="First Name"
                         value="{{old('first_name')}}">
+                        <div class="invalid-feedback first_name">First Name is required</div>
                 </div>
                 <div class="input-group"><span class="input-group-text"><i class="fa-solid fa-user-pen"></i></span>
                     <input class="form-control" type="text" name="last_name" required="" placeholder="Last Name"
                         value="{{old('last_name')}}">
+                        <div class="invalid-feedback last_name">First Name is required</div>
                 </div>
             </div>
         </div>
@@ -34,9 +36,11 @@
             <div class="small-group">
                 <div class="input-group"><span class="input-group-text"><i class="fa-sharp fa-solid fa-lock"></i></span>
                     <input class="form-control" type="password" name="password" required="" placeholder="Password">
+                    <div class="invalid-feedback last_name">Password is required</div>
                 </div>
                 <div class="input-group"><span class="input-group-text"><i class="fa-sharp fa-solid fa-lock"></i></span>
                     <input class="form-control" type="password" name="password_confirmation" required="" placeholder="Confirm Password">
+                    <div class="invalid-feedback last_name">Confirm Password is required</div>
                 </div>
             </div>
         </div>
@@ -54,6 +58,7 @@
                 <input id="location" class="form-control" type="text" name="address" required="" placeholder="Enter address">
                 <input type="hidden" name="lat" id="lat">
                 <input type="hidden" name="lng" id="lng">
+                <div class="invalid-feedback last_name">Please select address from dropdown options</div>
             </div>
         </div>
         <div class="form-group">
@@ -72,6 +77,7 @@
         </div>
         <div class="form-group mt-4">
             <input name="email" type="hidden" value="{{$email ?? old('email')}}">
+            <input name="phone_number" type="hidden" value="{{$phone_number ?? old('phone_number')}}">
             <button class="btn btn-primary btn-block w-100 fw-light" type="submit">Create Account</button>
         </div>
     </form>
