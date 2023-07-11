@@ -48,18 +48,20 @@
                                 @foreach($orders as $recent_order)
                                     <tr>
                                         <td>
+                                            @if($recent_order->user)
                                             <div class="media">
-                                                <div class="square-box me-2"><img class="img-fluid b-r-5"
-                                                        src="{{ asset($recent_order->user->image) }}" alt="">
-                                                </div>
-                                                <div class="media-body"><a href="user-profile.html">
-                                                        <h5>{{$recent_order->user->first_name}} added new Order</h5>
+                                                <div class="square-box me-2">
+                                                        <img class="img-fluid b-r-5" src="{{ $recent_order->user->image ? $recent_order->user->image : 'https://mowingandplowing.com/assets/images/default.png' }}" alt="">
+                                                    </div>
+                                                    <div class="media-body"><a href="user-profile.html">
+                                                        <h5>{{$recent_order->user->first_name ? $recent_order->user->first_name : "NULL" }} added new Order</h5>
                                                     </a>
-                                                  <p>Order id</p> <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}"><p class="font-primary">{{$recent_order->order_id}}</p></a>
+                                                    <p>Order id</p> <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}"><p class="font-primary">{{$recent_order->order_id ? $recent_order->order_id : "NULL"}}</p></a>
                                                 </div>
                                             </div>
+                                            @endif
                                         </td>
-                                        <td><span class="badge font-theme-light"><h6>{{date("M jS, Y", strtotime($recent_order->date));}}</h6></span></td>
+                                        <td><span class="badge font-theme-light"><h6>{{date("M jS, Y", strtotime($recent_order->date ? $recent_order->date : "NULL"));}}</h6></span></td>
                                     </tr>
                                 @endforeach()    
                                     @endif()
@@ -108,17 +110,17 @@
                                         <td>
                                             <div class="media">
                                                 <div class="square-box me-2"><img class="img-fluid b-r-5"
-                                                        src="{{ asset($user->image) }}" alt="">
+                                                        src="{{ asset($user && $user->image ? $user->image : 'https://mowingandplowing.com/assets/images/default.png') }}" alt="">
                                                 </div>
                                                 <div class="media-body ps-2">
                                                     <div class="avatar-details">
-                                                            <h6>{{$user->first_name .' '. $user->last_name}}</h6>
-                                                        </div>
+                                                        <h6>{{ $user && $user->first_name && $user->last_name ? ($user->first_name .' '. $user->last_name) : "NULL" }}</h6>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="img-content-box">
-                                            <h6>{{date("M jS, Y", strtotime($user->created_at));}}</h6>
+                                            <h6>{{date("M jS, Y", strtotime($user && $user->created_at ? $user->created_at : "NULL"));}}</h6>
                                         </td>
                                         <td>
                                             <h6>{{$user->type}}</h6>
@@ -139,8 +141,6 @@
 
                                     </tr>
                                     @endforeach()
-      
-                                  
                                 </tbody>
                             </table>
                         </div>
@@ -162,37 +162,33 @@
                         <div class="table-responsive custom-scrollbar">
                             <table class="table table-bordernone">
                                 <tbody>
-                                    @if(count($past_due_job) > 0)
-                                        @foreach($past_due_job as $recent_order)
-                                            <tr>
-                                                <td>
-                                                    <div class="media">
-                                                        @if($recent_order->user && $recent_order->user->image)
-                                                            <div class="square-box me-2">
-                                                                <img class="img-fluid b-r-5" src="{{ asset($recent_order->user->image) }}" alt="">
-                                                            </div>
-                                                        @endif
-                                                        <div class="media-body">
-                                                            <a href="user-profile.html">
-                                                                <h5>
-                                                                    {{ $recent_order->user ? $recent_order->user->first_name : 'Unknown User' }} added new Order
-                                                                </h5>
-                                                            </a>
-                                                            <p>Order id</p>
-                                                            <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}">
-                                                                <p class="font-primary">{{ $recent_order->order_id }}</p>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span class="badge font-theme-light">
-                                                        <h6>{{ date("M jS, Y", strtotime($recent_order->date)) }}</h6>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
+                                @if(count($past_due_job)>0)
+                                @foreach($past_due_job as $recent_order)
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                                <div class="square-box me-2">
+                                                    <img class="img-fluid b-r-5" src="{{ $recent_order->user && $recent_order->user->image ? $recent_order->user->image : 'https://mowingandplowing.com/assets/images/default.png' }}" alt="">
+                                                </div>
+                                                <div class="media-body">
+                                                    <a href="user-profile.html">
+                                                        <h5>{{ $recent_order->user && $recent_order->user->first_name ? $recent_order->user->first_name : "NULL" }} added new Order</h5>
+                                                    </a>
+                                                    <p>Order id</p>
+                                                    <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}">
+                                                        <p class="font-primary">{{$recent_order && $recent_order->order_id ? $recent_order->order_id : "NULL"  }}</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge font-theme-light">
+                                                <h6>{{ date("M jS, Y", strtotime($recent_order && $recent_order->date ? $recent_order->date : "NULL")) }}</h6>
+                                            </span>
+                                        </td>
+                                </tr>
+                                @endforeach()    
+                                    @endif()
                                 </tbody>
                             </table>
                         </div>
@@ -218,20 +214,20 @@
                                     <tr>
                                         <td>
                                             <div class="media">
-                                                <div class="square-box me-2"><img class="img-fluid b-r-5"
-                                                        src="{{ asset($recent_order->user->image) }}" alt="">
+                                                <div class="square-box me-2">
+                                                <img class="img-fluid b-r-5" src="{{ $recent_order->user && $recent_order->user->image ? $recent_order->user->image : 'https://mowingandplowing.com/assets/images/default.png' }}" alt="">
                                                 </div>
                                                 <div class="media-body"><a href="user-profile.html">
-                                                        <h5>{{$recent_order->user->first_name}} added new Order</h5>
+                                                        <h5>{{ $recent_order->user && $recent_order->user->first_name ? $recent_order->user->first_name : "NULL" }} added new Order</h5>
                                                     </a>
-                                                  <p>Order id</p> <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}"><p class="font-primary">{{$recent_order->order_id}}</p></a>
+                                                  <p>Order id</p> <a href="{{ route('admin.order.view-detail', ['id' => $recent_order->id, 'status' => $recent_order->status]) }}"><p class="font-primary">{{$recent_order && $recent_order->order_id  ? $recent_order->order_id : 'NULL'}}</p></a>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><span class="badge font-theme-light"><h6>{{date("M jS, Y", strtotime($recent_order->date));}}</h6></span></td>
+                                        <td><span class="badge font-theme-light"><h6>{{date("M jS, Y", strtotime($recent_order && $recent_order->date  ? $recent_order->date : 'NULL'));}}</h6></span></td>
                                     </tr>
                                 @endforeach()    
-                                    @endif()
+                                @endif()
                                 </tbody>
                             </table>
                         </div>

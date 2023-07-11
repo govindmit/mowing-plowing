@@ -25,7 +25,7 @@ class CancelJobsController extends AdminBaseController
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('username', function ($data) {
-                    return $data->user->first_name;
+                    return isset($data->user->first_name) ? $data->user->first_name : 'Not Assigned';
                 })
                 ->addColumn('category', function ($data) {
                     return $data->category->name;
@@ -64,7 +64,7 @@ class CancelJobsController extends AdminBaseController
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('username', function ($data) {
-                    return $data->user->first_name;
+                    return isset($data->user->first_name) ? $data->user->first_name : 'Not Assigned';
                 })
                 ->addColumn('category', function ($data) {
                     return $data->category->name;
